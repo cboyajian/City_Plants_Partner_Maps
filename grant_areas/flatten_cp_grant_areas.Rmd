@@ -1,0 +1,32 @@
+---
+title: "Flattening CP Partner Grant Areas"
+author: "Clarissa Boyajian"
+date: "11/9/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(rosm)
+```
+
+```{r}
+la_cd_outline <- st_read(dsn = "data/LA_City_Council_Districts_(Adopted_2012).kml")
+
+la_city_outline <- st_read(dsn = "data/City_Boundary.kml") %>% 
+  mutate(Name = "City of LA Outline") %>% 
+  select("Name", "geometry")
+
+tm_shape(la_cd_outline) +
+  tm_polygons(col = "Name")
+
+tm_shape(la_city_outline) +
+  tm_polygons()
+```
+

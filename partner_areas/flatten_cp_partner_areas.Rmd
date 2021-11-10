@@ -13,8 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(sf)
 library(tmap)
-library(rgdal)
-library(janitor)
 library(rosm)
 ```
 
@@ -204,9 +202,4 @@ tmap_mode("view") +
   tm_fill(col = "Name", alpha = 0.4) +
   tm_borders(col = "black", alpha = 0.5)
 ```
-
-```{r}
-
-```
-
 
