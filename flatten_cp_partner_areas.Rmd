@@ -1,0 +1,212 @@
+---
+title: "Flattening Grant Areas - City Plants"
+author: "Clarissa Boyajian"
+date: "11/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, Load libraries}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(rgdal)
+library(janitor)
+library(rosm)
+```
+
+# Creating City Plants Partner Planting Boundaries
+```{r Load LA City Outline}
+la_cd_outline <- st_read(dsn = "data/LA_City_Council_Districts_(Adopted_2012).kml") %>% 
+  st_union()
+
+la_city_outline <- st_read(dsn = "data/City_Boundary.kml") %>% 
+  mutate(Name = "City of LA Outline") %>% 
+  select("Name", "geometry")
+
+tmap_mode("plot") +
+tm_shape(la_city_outline) +
+  tm_polygons()
+```
+
+```{r Create LACC_ELA Area}
+# Create first portion of LACC ELA
+lacc_rough <- st_read(dsn = "data/LACC.kml", layer = "LACC") %>% 
+  select("Name", "geometry")
+
+lacc_ela_main <- st_intersection(la_city_outline, lacc_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LACC_ELA")
+  
+la_city_outline_removed <- st_difference(la_city_outline, lacc_rough) %>% 
+  select("Name", "geometry")
+
+
+# Add in South LA portion of LACC ELA
+lacc_ela_sla_rough <- st_read(dsn = "data/LACC_ELA.kml") %>% 
+  select("Name", "geometry")
+
+lacc_ela_sla <- st_intersection(la_city_outline_removed, lacc_ela_sla_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LACC_ELA")
+
+lacc_ela <- st_union(lacc_ela_main, lacc_ela_sla) %>% 
+  select("geometry") %>% 
+  mutate(Name = "LACC_ELA", .before = "geometry")
+
+la_city_outline_removed <- st_difference(la_city_outline_removed, lacc_ela_sla_rough) %>% 
+  select("Name", "geometry")
+
+tm_shape(lacc_ela) +
+  tm_polygons()
+
+tm_shape(la_city_outline_removed) +
+  tm_polygons()
+```
+
+```{r Create LACC_Valley Area}
+lacc_valley_rough <- st_read(dsn = "data/LACC_Valley.kml") %>% 
+  select("Name", "geometry")
+
+lacc_valley <- st_intersection(la_city_outline_removed, lacc_valley_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LACC_Valley")
+
+la_city_outline_removed <- st_difference(la_city_outline_removed, lacc_valley_rough) %>% 
+  select("Name", "geometry")
+
+tm_shape(lacc_valley) +
+  tm_polygons()
+
+tm_shape(la_city_outline_removed) +
+  tm_polygons()
+```
+
+```{r Create KYCC Area}
+kycc_rough <- st_read(dsn = "data/KYCC.kml") %>% 
+  select("Name", "geometry")
+
+kycc <- st_intersection(la_city_outline_removed, kycc_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "KYCC")
+
+la_city_outline_removed <- st_difference(la_city_outline_removed, kycc_rough) %>% 
+  select("Name", "geometry")
+
+tm_shape(kycc) +
+  tm_polygons()
+
+tm_shape(la_city_outline_removed) +
+  tm_polygons()
+```
+
+```{r Create NET Area}
+# Create first portion NET Watts Area
+net_watts_rough <- st_read(dsn = "data/NET_Watts.kml") %>% 
+  select("Name", "geometry")
+
+net_watts <- st_intersection(la_city_outline_removed, net_watts_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET")
+
+la_city_outline_removed <- st_difference(la_city_outline_removed, net_watts_rough) %>% 
+  select("Name", "geometry")
+
+
+# Adding in full NET Area
+net_rough <- st_read(dsn = "data/NET.kml") %>% 
+  select("Name", "geometry")
+
+net_main <- st_intersection(la_city_outline_removed, net_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET")
+
+net <- st_union(net_main, net_watts) %>% 
+  select("geometry") %>% 
+  mutate(Name = "NET", .before = "geometry")
+
+la_city_outline_removed <- st_difference(la_city_outline_removed, net_rough) %>% 
+  select("Name", "geometry")
+
+tm_shape(net) +
+  tm_polygons()
+
+tm_shape(la_city_outline_removed) +
+  tm_polygons()
+```
+
+```{r Create HLABT Areae}
+hlabt_rough <- st_read(dsn = "data/HLABT.kml") %>% 
+  select("Name", "geometry")
+
+hlabt <- st_intersection(la_city_outline_removed, hlabt_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "HLABT")
+
+la_city_outline_removed <- st_difference(la_city_outline_removed, hlabt_rough) %>% 
+  select("Name", "geometry")
+
+tm_shape(hlabt) +
+  tm_polygons()
+
+tm_shape(la_city_outline_removed) +
+  tm_polygons()
+```
+
+```{r Create TreePeople Area}
+tp <- la_city_outline_removed %>% 
+  mutate(Name = "TreePeople")
+
+tm_shape(tp) +
+  tm_polygons()
+```
+
+```{r Combine Partner Areas into One Dataframe}
+city_plants_partner_boundaries <- rbind(lacc_ela, lacc_valley, net, kycc, hlabt, tp)
+
+tm_shape(city_plants_partner_boundaries) +
+  tm_polygons(col = "Name")
+```
+
+```{r Save Partner Boundaries to ShapeFile}
+st_write(city_plants_partner_boundaries, "flattened_maps/City_Plants_Partner_Planting_Boundaries.shp", append = FALSE)
+
+st_write(city_plants_partner_boundaries, "flattened_maps/City_Plants_Partner_Planting_Boundaries.kml", append = FALSE)
+```
+
+
+
+
+
+
+## Mapping the Areas
+
+```{r Create LA Base Map, warning = FALSE}
+bbox_poly = st_polygon(list(rbind(c(-118.735904, 34.349321), #left, top
+                                  c(-118.735904, 34.349321), #right, top
+                                  c(-118.152680, 33.704487), #right, bottom
+                                  c(-118.152680, 33.704487), #left, bottom
+                                  c(-118.735904, 34.349321))) #left, top
+                       )
+
+LA_zoom <- osm.raster(st_bbox(st_sfc(bbox_poly, 
+                                     crs = 4326)))
+```
+
+```{r, Mapping Partner Areas}
+tmap_mode("view") +
+  tm_shape(LA_zoom) +
+  tm_rgb() +
+  tm_shape(city_plants_partner_boundaries) +
+  tm_fill(col = "Name", alpha = 0.4) +
+  tm_borders(col = "black", alpha = 0.5)
+```
+
+```{r}
+
+```
+
+
