@@ -75,10 +75,11 @@ kycc_grants <- rbind(kycc_calfire_jefferson, kycc_calfire_sla, kycc_calfire_amba
 
 # Map check
 tm_shape(kycc_area_full) +
-  tm_polygons(col = "lightblue", alpha = 0.5) +
+  tm_polygons(col = "grey", alpha = 0.5) +
   tm_shape(kycc_grants) +
   tm_borders(col = "darkred") +
-  tm_fill(col = "Name")
+  tm_fill(col = "Name") +
+  tm_layout(legend.position = c("left", "bottom"))
 
 ```
 
