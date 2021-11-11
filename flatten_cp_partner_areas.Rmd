@@ -98,7 +98,7 @@ tm_shape(la_city_outline_smaller) +
 ## Creating KYCC Area
 
 ```{r Create KYCC Area}
-kycc_rough <- st_read(dsn = "data/KYCC.kml") %>% 
+kycc_rough <- st_read(dsn = "partner_area_data/KYCC.kml") %>% 
   select("Name", "geometry")
 
 kycc <- st_intersection(la_city_outline_smaller, kycc_rough) %>% 
@@ -119,7 +119,7 @@ tm_shape(la_city_outline_smaller) +
 
 ```{r Create NET Area}
 # Create first portion NET Watts Area
-net_watts_rough <- st_read(dsn = "data/NET_Watts.kml") %>% 
+net_watts_rough <- st_read(dsn = "partner_area_data/NET_Watts.kml") %>% 
   select("Name", "geometry")
 
 net_watts <- st_intersection(la_city_outline_smaller, net_watts_rough) %>% 
@@ -131,7 +131,7 @@ la_city_outline_smaller <- st_difference(la_city_outline_smaller, net_watts_roug
 
 
 # Adding in full NET Area
-net_rough <- st_read(dsn = "data/NET.kml") %>% 
+net_rough <- st_read(dsn = "partner_area_data/NET.kml") %>% 
   select("Name", "geometry")
 
 net_main <- st_intersection(la_city_outline_smaller, net_rough) %>% 
@@ -155,7 +155,7 @@ tm_shape(la_city_outline_smaller) +
 ## Creating HLABT Area
 
 ```{r Create HLABT Areae}
-hlabt_rough <- st_read(dsn = "data/HLABT.kml") %>% 
+hlabt_rough <- st_read(dsn = "partner_area_data/HLABT.kml") %>% 
   select("Name", "geometry")
 
 hlabt <- st_intersection(la_city_outline_smaller, hlabt_rough) %>% 
@@ -191,13 +191,27 @@ tm_shape(city_plants_partner_boundaries) +
   tm_polygons(col = "Name")
 ```
 
-# Saving to shp and kml Files
 
-```{r Save Partner Boundaries to ShapeFile}
-st_write(city_plants_partner_boundaries, "flattened_maps/City_Plants_Partner_Planting_Boundaries.shp", append = FALSE)
 
-st_write(city_plants_partner_boundaries, "flattened_maps/City_Plants_Partner_Planting_Boundaries.kml", append = FALSE)
+# Saving to shp and kml Files (NOTE: have to run manually)
+
+```{r Save Areas to ShapeFile and KML, eval=FALSE}
+# Saving all partner areas to SHP
+st_write(city_plants_partner_boundaries, "partner_area_flattened/City_Plants_Partner_Planting_Boundaries.shp", append = FALSE)
+
+# Saving all partner areas to KML
+st_write(city_plants_partner_boundaries, "partner_area_flattened/City_Plants_Partner_Planting_Boundaries.kml", append = FALSE)
+
+# Saving each partner area to KML
+st_write(lacc_ela, "grant_area_data/lacc_ela.kml", append = FALSE)
+st_write(lacc_valley, "grant_area_data/lacc_valley.kml", append = FALSE)
+st_write(kycc, "grant_area_data/kycc.kml", append = FALSE)
+st_write(net, "grant_area_data/net.kml", append = FALSE)
+st_write(hlabt, "grant_area_data/hlabt.kml", append = FALSE)
+st_write(tp, "grant_area_data/tp.kml", append = FALSE)
 ```
+
+
 
 # Mapping All City Plants Nonprofit Planting Partner Areas
 
