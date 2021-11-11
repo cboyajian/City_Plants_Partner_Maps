@@ -18,13 +18,14 @@ library(rosm)
 
 # Creating City Plants Partner Planting Boundaries
 
+
 ## Creating Los Angeles Outline
 
 ```{r Load LA City Outline}
-la_cd_outline <- st_read(dsn = "data/LA_City_Council_Districts_(Adopted_2012).kml") %>% 
+la_cd_outline <- st_read(dsn = "data_general/LA_City_Council_Districts_(Adopted_2012).kml") %>% 
   st_union()
 
-la_city_outline <- st_read(dsn = "data/City_Boundary.kml") %>% 
+la_city_outline <- st_read(dsn = "data_general/City_Boundary.kml") %>% 
   mutate(Name = "City of LA Outline") %>% 
   select("Name", "geometry")
 
@@ -32,26 +33,29 @@ tmap_mode("plot") +
 tm_shape(la_city_outline) +
   tm_polygons()
 ```
+
+
 ## Creating LACC Areas
 
-```{r Create LACC_ELA Area}
+```{r LACC_ELA 1}
 # Create first portion of LACC ELA
-lacc_rough <- st_read(dsn = "data/LACC.kml", layer = "LACC") %>% 
+lacc_rough <- st_read(dsn = "partner_area_data/LACC.kml", layer = "LACC") %>% 
   select("Name", "geometry")
 
 lacc_ela_main <- st_intersection(la_city_outline, lacc_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LACC_ELA")
   
-la_city_outline_removed <- st_difference(la_city_outline, lacc_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline, lacc_rough) %>% 
   select("Name", "geometry")
+```
 
-
+```{r LACC_ELA 2}
 # Add in South LA portion of LACC ELA
-lacc_ela_sla_rough <- st_read(dsn = "data/LACC_ELA.kml") %>% 
+lacc_ela_sla_rough <- st_read(dsn = "partner_area_data/LACC_ELA.kml") %>% 
   select("Name", "geometry")
 
-lacc_ela_sla <- st_intersection(la_city_outline_removed, lacc_ela_sla_rough) %>% 
+lacc_ela_sla <- st_intersection(la_city_outline_smaller, lacc_ela_sla_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LACC_ELA")
 
@@ -59,31 +63,35 @@ lacc_ela <- st_union(lacc_ela_main, lacc_ela_sla) %>%
   select("geometry") %>% 
   mutate(Name = "LACC_ELA", .before = "geometry")
 
-la_city_outline_removed <- st_difference(la_city_outline_removed, lacc_ela_sla_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_ela_sla_rough) %>% 
   select("Name", "geometry")
+```
 
+```{r LACC_ELA Map Check}
 tm_shape(lacc_ela) +
   tm_polygons()
 
-tm_shape(la_city_outline_removed) +
+tm_shape(la_city_outline_smaller) +
   tm_polygons()
 ```
 
-```{r Create LACC_Valley Area}
-lacc_valley_rough <- st_read(dsn = "data/LACC_Valley.kml") %>% 
+```{r LACC_Valley}
+lacc_valley_rough <- st_read(dsn = "partner_area_data/LACC_Valley.kml") %>% 
   select("Name", "geometry")
 
-lacc_valley <- st_intersection(la_city_outline_removed, lacc_valley_rough) %>% 
+lacc_valley <- st_intersection(la_city_outline_smaller, lacc_valley_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LACC_Valley")
 
-la_city_outline_removed <- st_difference(la_city_outline_removed, lacc_valley_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_valley_rough) %>% 
   select("Name", "geometry")
+```
 
+```{r LACC_Valley Map Check}
 tm_shape(lacc_valley) +
   tm_polygons()
 
-tm_shape(la_city_outline_removed) +
+tm_shape(la_city_outline_smaller) +
   tm_polygons()
 ```
 
@@ -93,17 +101,17 @@ tm_shape(la_city_outline_removed) +
 kycc_rough <- st_read(dsn = "data/KYCC.kml") %>% 
   select("Name", "geometry")
 
-kycc <- st_intersection(la_city_outline_removed, kycc_rough) %>% 
+kycc <- st_intersection(la_city_outline_smaller, kycc_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "KYCC")
 
-la_city_outline_removed <- st_difference(la_city_outline_removed, kycc_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, kycc_rough) %>% 
   select("Name", "geometry")
 
 tm_shape(kycc) +
   tm_polygons()
 
-tm_shape(la_city_outline_removed) +
+tm_shape(la_city_outline_smaller) +
   tm_polygons()
 ```
 
@@ -114,11 +122,11 @@ tm_shape(la_city_outline_removed) +
 net_watts_rough <- st_read(dsn = "data/NET_Watts.kml") %>% 
   select("Name", "geometry")
 
-net_watts <- st_intersection(la_city_outline_removed, net_watts_rough) %>% 
+net_watts <- st_intersection(la_city_outline_smaller, net_watts_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "NET")
 
-la_city_outline_removed <- st_difference(la_city_outline_removed, net_watts_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, net_watts_rough) %>% 
   select("Name", "geometry")
 
 
@@ -126,7 +134,7 @@ la_city_outline_removed <- st_difference(la_city_outline_removed, net_watts_roug
 net_rough <- st_read(dsn = "data/NET.kml") %>% 
   select("Name", "geometry")
 
-net_main <- st_intersection(la_city_outline_removed, net_rough) %>% 
+net_main <- st_intersection(la_city_outline_smaller, net_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "NET")
 
@@ -134,13 +142,13 @@ net <- st_union(net_main, net_watts) %>%
   select("geometry") %>% 
   mutate(Name = "NET", .before = "geometry")
 
-la_city_outline_removed <- st_difference(la_city_outline_removed, net_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, net_rough) %>% 
   select("Name", "geometry")
 
 tm_shape(net) +
   tm_polygons()
 
-tm_shape(la_city_outline_removed) +
+tm_shape(la_city_outline_smaller) +
   tm_polygons()
 ```
 
@@ -150,24 +158,24 @@ tm_shape(la_city_outline_removed) +
 hlabt_rough <- st_read(dsn = "data/HLABT.kml") %>% 
   select("Name", "geometry")
 
-hlabt <- st_intersection(la_city_outline_removed, hlabt_rough) %>% 
+hlabt <- st_intersection(la_city_outline_smaller, hlabt_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "HLABT")
 
-la_city_outline_removed <- st_difference(la_city_outline_removed, hlabt_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, hlabt_rough) %>% 
   select("Name", "geometry")
 
 tm_shape(hlabt) +
   tm_polygons()
 
-tm_shape(la_city_outline_removed) +
+tm_shape(la_city_outline_smaller) +
   tm_polygons()
 ```
 
 ## Creating TP Area
 
 ```{r Create TreePeople Area}
-tp <- la_city_outline_removed %>% 
+tp <- la_city_outline_smaller %>% 
   mutate(Name = "TreePeople")
 
 tm_shape(tp) +
