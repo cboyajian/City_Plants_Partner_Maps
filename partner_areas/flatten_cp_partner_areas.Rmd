@@ -17,6 +17,9 @@ library(rosm)
 ```
 
 # Creating City Plants Partner Planting Boundaries
+
+## Creating Los Angeles Outline
+
 ```{r Load LA City Outline}
 la_cd_outline <- st_read(dsn = "data/LA_City_Council_Districts_(Adopted_2012).kml") %>% 
   st_union()
@@ -29,6 +32,7 @@ tmap_mode("plot") +
 tm_shape(la_city_outline) +
   tm_polygons()
 ```
+## Creating LACC Areas
 
 ```{r Create LACC_ELA Area}
 # Create first portion of LACC ELA
@@ -83,6 +87,8 @@ tm_shape(la_city_outline_removed) +
   tm_polygons()
 ```
 
+## Creating KYCC Area
+
 ```{r Create KYCC Area}
 kycc_rough <- st_read(dsn = "data/KYCC.kml") %>% 
   select("Name", "geometry")
@@ -100,6 +106,8 @@ tm_shape(kycc) +
 tm_shape(la_city_outline_removed) +
   tm_polygons()
 ```
+
+## Creating NET Area
 
 ```{r Create NET Area}
 # Create first portion NET Watts Area
@@ -136,6 +144,8 @@ tm_shape(la_city_outline_removed) +
   tm_polygons()
 ```
 
+## Creating HLABT Area
+
 ```{r Create HLABT Areae}
 hlabt_rough <- st_read(dsn = "data/HLABT.kml") %>% 
   select("Name", "geometry")
@@ -154,6 +164,8 @@ tm_shape(la_city_outline_removed) +
   tm_polygons()
 ```
 
+## Creating TP Area
+
 ```{r Create TreePeople Area}
 tp <- la_city_outline_removed %>% 
   mutate(Name = "TreePeople")
@@ -162,6 +174,8 @@ tm_shape(tp) +
   tm_polygons()
 ```
 
+## Combining All Partner Areas
+
 ```{r Combine Partner Areas into One Dataframe}
 city_plants_partner_boundaries <- rbind(lacc_ela, lacc_valley, net, kycc, hlabt, tp)
 
@@ -169,18 +183,15 @@ tm_shape(city_plants_partner_boundaries) +
   tm_polygons(col = "Name")
 ```
 
+# Saving to shp and kml Files
+
 ```{r Save Partner Boundaries to ShapeFile}
 st_write(city_plants_partner_boundaries, "flattened_maps/City_Plants_Partner_Planting_Boundaries.shp", append = FALSE)
 
 st_write(city_plants_partner_boundaries, "flattened_maps/City_Plants_Partner_Planting_Boundaries.kml", append = FALSE)
 ```
 
-
-
-
-
-
-## Mapping the Areas
+# Mapping All City Plants Nonprofit Planting Partner Areas
 
 ```{r Create LA Base Map, warning = FALSE}
 bbox_poly = st_polygon(list(rbind(c(-118.735904, 34.349321), #left, top
