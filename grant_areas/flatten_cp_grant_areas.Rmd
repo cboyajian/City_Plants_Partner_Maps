@@ -30,3 +30,55 @@ tm_shape(la_city_outline) +
   tm_polygons()
 ```
 
+```{r KYCC grants}
+kycc_area_full <- st_read(dsn = "data/kycc.kml") %>% 
+  select("Name", "geometry")
+
+# Remove and create CalFire-Jefferson grant
+kycc_calfire_jefferson_rough <- st_read(dsn = "data/kycc_calfire-jeffereson.kml")
+
+kycc_calfire_jefferson <- st_intersection(kycc_area_full, kycc_calfire_jefferson_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "KYCC_CalFire-Jefferson")
+
+kycc_area <- st_difference(kycc_area_full, kycc_calfire_jefferson_rough)
+
+# Remove and create CalFire-SLA grant
+kycc_calfire_sla_rough <- st_read(dsn = "data/kycc_calfire-sla.kml")
+
+kycc_calfire_sla <- st_intersection(kycc_area, kycc_calfire_sla_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "KYCC_CalFire-SLA")
+
+kycc_area <- st_difference(kycc_area, kycc_calfire_sla_rough)
+
+# Remove and create CalFire-Ambassadors grant
+kycc_calfire_ambassadors_rough <- st_read(dsn = "data/kycc_calfire-ambassadors.kml")
+
+kycc_calfire_ambassadors <- st_intersection(kycc_area, kycc_calfire_ambassadors_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "KYCC_CalFire-Ambassador")
+
+kycc_area <- st_difference(kycc_area, kycc_calfire_ambassadors_rough)
+
+# Remove and create CalFire-Density grant
+kycc_calfire_density_rough <- st_read(dsn = "data/kycc_calfire-density.kml")
+
+kycc_calfire_density <- st_intersection(kycc_area, kycc_calfire_density_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "KYCC_CalFire-Density")
+
+kycc_area <- st_difference(kycc_area, kycc_calfire_density_rough)
+
+# Create KYCC all grants df
+kycc_grants <- rbind(kycc_calfire_jefferson, kycc_calfire_sla, kycc_calfire_ambassadors, kycc_calfire_density)
+
+# Map check
+tm_shape(kycc_area_full) +
+  tm_polygons(col = "lightblue", alpha = 0.5) +
+  tm_shape(kycc_grants) +
+  tm_borders(col = "darkred") +
+  tm_fill(col = "Name")
+
+```
+
