@@ -58,12 +58,12 @@ lacc_ela_sla <- st_intersection(la_city_outline_smaller, lacc_ela_sla_rough) %>%
   select("Name", "geometry") %>% 
   mutate(Name = "LACC_ELA")
 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_ela_sla_rough) %>% 
+  select("Name", "geometry")
+
 lacc_ela <- st_union(lacc_ela_main, lacc_ela_sla) %>% 
   select("geometry") %>% 
   mutate(Name = "LACC_ELA", .before = "geometry")
-
-la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_ela_sla_rough) %>% 
-  select("Name", "geometry")
 
 
 # Map check
@@ -76,19 +76,31 @@ tm_shape(la_city_outline_smaller) +
 
 ```{r LACC_Valley}
 # Create first portion of LACC_Valley
-lacc_valley_rough <- st_read(dsn = "partner_area_data/LACC_Valley.kml") %>% 
+lacc_valley_main_rough <- st_read(dsn = "partner_area_data/LACC_Valley.kml") %>% 
   select("Name", "geometry")
 
-lacc_valley <- st_intersection(la_city_outline_smaller, lacc_valley_rough) %>% 
+lacc_valley_main <- st_intersection(la_city_outline_smaller, lacc_valley_main_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LACC_Valley")
 
-la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_valley_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_valley_main_rough) %>% 
   select("Name", "geometry")
 
 
 # Adding in TCC project to LACC_Valley
+lacc_valley_tcc_rough <- st_read(dsn = "partner_area_data/lacc-valley_tcc-project.kml") %>% 
+  select("Name", "geometry")
 
+lacc_valley_tcc <- st_intersection(la_city_outline_smaller, lacc_valley_tcc_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LACC_ELA")
+
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_valley_tcc_rough) %>% 
+  select("Name", "geometry")
+
+lacc_valley <- st_union(lacc_valley_main, lacc_valley_tcc) %>% 
+  select("geometry") %>% 
+  mutate(Name = "LACC_ELA", .before = "geometry")
 
 
 # Map check

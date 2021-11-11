@@ -122,7 +122,7 @@ tp_grants <- st_intersection(tp_area, tp_area)
 
 
 # Map check
-tm_shape(tp_grants) +
+tm_shape(tp_area) +
   tm_polygons(col = "grey", alpha = 0.5) +
   tm_shape(tp_grants)+
   tm_borders(col = "darkred") +
@@ -132,17 +132,43 @@ tm_shape(tp_grants) +
 
 
 ## Creating LACC Grants Areas
-```{r}
+```{r LACC_Valley}
 # Read in full partner area
-lacc_area <- st_read(dsn = "grant_area_data/lacc.kml") %>% 
+lacc_valley_area <- st_read(dsn = "grant_area_data/lacc_valley.kml") %>% 
   select("Name", "geometry")
 
+# Create TCC Project area
+lacc_valley_tcc_rough <- st_read(dsn = "grant_area_data/lacc-valley_tcc-project.kml")
+
+lacc_valley_tcc <- st_intersection(lacc_valley_area, lacc_valley_tcc_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "KYCC_CalFire-Jefferson")
+
+# Create () all grants df
+lacc_valley_grants <- lacc_valley_tcc
+
+
+# Map check
+tm_shape(lacc_valley_area) +
+  tm_polygons(col = "grey", alpha = 0.5) +
+  tm_shape(lacc_valley_grants) +
+  tm_borders(col = "darkred") +
+  tm_fill(col = "Name") +
+  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
 ```
 
 
-
-
 ## Creating HLABT Grant Areas
+
+```{r HLABT}
+# Read in full partner area
+###kycc_area <- st_read(dsn = "grant_area_data/kycc.kml") %>% 
+###  select("Name", "geometry")
+
+
+# Create () area
+```
+
 
 ## Creating NET Grant Areas
 
