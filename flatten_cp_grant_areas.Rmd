@@ -94,12 +94,13 @@ kycc_grants <- rbind(kycc_calfire_jefferson, kycc_calfire_sla, kycc_calfire_amba
 
 
 # Map check
-tm_shape(kycc_area) +
-  tm_polygons(col = "grey", alpha = 0.5) +
-  tm_shape(kycc_grants) +
-  tm_borders(col = "darkred") +
+tm_shape(kycc_grants) +
+  tm_borders(col = NA) +
   tm_fill(col = "Name") +
-  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
+  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
+  tm_shape(kycc_area) +
+  tm_borders(col = "darkred", alpha = 0.75) +
+  tm_fill(col = "grey", alpha = 0.5)
 ```
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save KYCC grants to SHP and KML, eval=FALSE}
@@ -124,12 +125,13 @@ tp_grants <- tp_area
 
 
 # Map check
-tm_shape(tp_area) +
-  tm_polygons(col = "grey", alpha = 0.5) +
-  tm_shape(tp_grants)+
-  tm_borders(col = "darkred") +
+tm_shape(tp_grants) +
+  tm_borders(col = NA) +
   tm_fill(col = "Name") +
-  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
+  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
+  tm_shape(tp_area) +
+  tm_borders(col = "darkred", alpha = 0.75) +
+  tm_fill(col = "grey", alpha = 0.5)
 ```
 
 
@@ -151,12 +153,13 @@ lacc_valley_grants <- lacc_valley_tcc
 
 
 # Map check
-tm_shape(lacc_valley_area) +
-  tm_polygons(col = "grey", alpha = 0.5) +
-  tm_shape(lacc_valley_grants) +
-  tm_borders(col = "darkred") +
+tm_shape(lacc_valley_grants) +
+  tm_borders(col = NA) +
   tm_fill(col = "Name") +
-  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
+  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
+  tm_shape(lacc_valley_area) +
+  tm_borders(col = "darkred", alpha = 0.75) +
+  tm_fill(col = "grey", alpha = 0.5)
 ```
 
 
@@ -207,21 +210,41 @@ hlabt_area_smaller <- st_difference(hlabt_area_smaller, cd13)
 
 
 # Map check
-tm_shape(hlabt_area) +
-  tm_polygons(col = "grey", alpha = 0.5) +
-  tm_shape(hlabt_grants) +
-  tm_borders(col = "darkred") +
+tm_shape(kycc_grants) +
+  tm_borders(col = NA) +
   tm_fill(col = "Name") +
-  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
+  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
+  tm_shape(kycc_area) +
+  tm_borders(col = "darkred", alpha = 0.75) +
+  tm_fill(col = "grey", alpha = 0.5)
 ```
 
 
-## Creating NET Grant Areas
+## Creating LASAN Boyle Heights area
+
 ```{r}
-# Read in full partner area
+# Read in full NET partner area
 net_area <- st_read(dsn = "grant_area_data/net.kml") %>% 
   select("Name", "geometry")
 
+#Create LASAN Boyle Heights area
+lasan_boyle_heights_rough <- st_read(dsn = "grant_area_data/lasan_boyle-heights.kml")
+
+lasan_boyle_heights <- st_intersection(net_area, lasan_boyle_heights_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN_Boyle-Heights")
+
+# Remove LASAN Boyle Heights from NET area
+net_area_smaller <- st_difference(net_area, kycc_calfire_jefferson_rough)
+
+
+# Map check
+tm_shape(net_area) +
+  tm_polygons(col = "grey", alpha = 0.5) +
+  tm_shape(lasan_boyle_heights) +
+  tm_borders(col = "darkred") +
+  tm_fill(col = "Name") +
+  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
 ```
 
 

@@ -2,13 +2,13 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>NET</name>
-    <Style id="poly-9C27B0-2201-36-nodesc-normal">
+    <Style id="poly-C2185B-3201-25-nodesc-normal">
       <LineStyle>
-        <color>ffb0279c</color>
-        <width>2.201</width>
+        <color>ff5b18c2</color>
+        <width>3.201</width>
       </LineStyle>
       <PolyStyle>
-        <color>24b0279c</color>
+        <color>195b18c2</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-9C27B0-2201-36-nodesc-highlight">
+    <Style id="poly-C2185B-3201-25-nodesc-highlight">
       <LineStyle>
-        <color>ffb0279c</color>
-        <width>3.3015</width>
+        <color>ff5b18c2</color>
+        <width>4.8015</width>
       </LineStyle>
       <PolyStyle>
-        <color>24b0279c</color>
+        <color>195b18c2</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,19 +30,19 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-9C27B0-2201-36-nodesc">
+    <StyleMap id="poly-C2185B-3201-25-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-9C27B0-2201-36-nodesc-normal</styleUrl>
+        <styleUrl>#poly-C2185B-3201-25-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-9C27B0-2201-36-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-C2185B-3201-25-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name>NET</name>
-      <styleUrl>#poly-9C27B0-2201-36-nodesc</styleUrl>
+      <styleUrl>#poly-C2185B-3201-25-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>

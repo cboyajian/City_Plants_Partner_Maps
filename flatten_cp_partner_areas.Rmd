@@ -85,7 +85,7 @@ net <- st_union(net_temp, net_scla_greening) %>%
 
 # Map check
 tm_shape(net) +
-  tm_polygons()
+  tm_polygons(alpha = 0.5)
 
 tm_shape(la_city_outline_smaller) +
   tm_polygons()
@@ -150,14 +150,14 @@ lacc_valley_tcc_rough <- st_read(dsn = "partner_area_data/lacc-valley_tcc-projec
 
 lacc_valley_tcc <- st_intersection(la_city_outline_smaller, lacc_valley_tcc_rough) %>% 
   select("Name", "geometry") %>% 
-  mutate(Name = "LACC_ELA")
+  mutate(Name = "LACC_Valley")
 
 la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_valley_tcc_rough) %>% 
   select("Name", "geometry")
 
 lacc_valley <- st_union(lacc_valley_main, lacc_valley_tcc) %>% 
   select("geometry") %>% 
-  mutate(Name = "LACC_ELA", .before = "geometry")
+  mutate(Name = "LACC_Valley", .before = "geometry")
 
 
 # Map check
@@ -238,7 +238,8 @@ city_plants_partner_boundaries <- rbind(lacc_ela, lacc_valley, net, kycc, hlabt,
 
 # Map check
 tm_shape(city_plants_partner_boundaries) +
-  tm_polygons(col = "Name")
+  tm_fill(col = "Name", alpha = 0.4) +
+  tm_borders(col = "black", alpha = 0.5)
 ```
 
 
@@ -264,12 +265,4 @@ st_write(tp, "grant_area_data/tp.kml", append = FALSE)
 
 
 
-# Mapping All City Plants Nonprofit Planting Partner Areas
-
-```{r Create LA Base Map, warning = FALSE}
-# Create zoom-able map of all partner areas
-tm_shape(city_plants_partner_boundaries) +
-  tm_fill(col = "Name", alpha = 0.4) +
-  tm_borders(col = "black", alpha = 0.5)
-```
 
