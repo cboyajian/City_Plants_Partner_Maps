@@ -45,46 +45,54 @@ kycc_area <- st_read(dsn = "grant_area_data/kycc.kml") %>%
 
 
 # Create CalFire-Jefferson area
-kycc_calfire_jefferson_rough <- st_read(dsn = "grant_area_data/kycc_calfire-jeffereson.kml")
+kycc_calfire_jefferson_rough <- st_read(dsn = "grant_area_data/KYCC_calfire-jefferson.kml") %>% 
+  select("Name", "geometry")
 
 kycc_calfire_jefferson <- st_intersection(kycc_area, kycc_calfire_jefferson_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "KYCC_CalFire-Jefferson")
 
 # Remove CalFire-Jefferson from KYCC area
-kycc_area_smaller <- st_difference(kycc_area, kycc_calfire_jefferson_rough)
+kycc_area_smaller <- st_difference(kycc_area, kycc_calfire_jefferson_rough) %>% 
+  select("Name", "geometry")
 
 
 # Create CalFire-SLA area
-kycc_calfire_sla_rough <- st_read(dsn = "grant_area_data/kycc_calfire-sla.kml")
+kycc_calfire_sla_rough <- st_read(dsn = "grant_area_data/KYCC_calfire-sla.kml") %>% 
+  select("Name", "geometry")
 
 kycc_calfire_sla <- st_intersection(kycc_area_smaller, kycc_calfire_sla_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "KYCC_CalFire-SLA")
 
 # Remove CalFire-SLA area from KYCC area
-kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_sla_rough)
+kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_sla_rough) %>% 
+  select("Name", "geometry")
 
 
 # Create CalFire-Ambassadors area
-kycc_calfire_ambassadors_rough <- st_read(dsn = "grant_area_data/kycc_calfire-ambassadors.kml")
+kycc_calfire_ambassadors_rough <- st_read(dsn = "grant_area_data/KYCC_calfire-ambassador.kml") %>% 
+  select("Name", "geometry")
 
 kycc_calfire_ambassadors <- st_intersection(kycc_area_smaller, kycc_calfire_ambassadors_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "KYCC_CalFire-Ambassador")
 
 # Remove CalFire-Ambassadors area from KYCC area
-kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_ambassadors_rough)
+kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_ambassadors_rough) %>% 
+  select("Name", "geometry")
 
 
 # Remove and create CalFire-Density grant
-kycc_calfire_density_rough <- st_read(dsn = "grant_area_data/kycc_calfire-density.kml")
+kycc_calfire_density_rough <- st_read(dsn = "grant_area_data/KYCC_calfire-density.kml") %>% 
+  select("Name", "geometry")
 
 kycc_calfire_density <- st_intersection(kycc_area_smaller, kycc_calfire_density_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "KYCC_CalFire-Density")
 
-kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_density_rough)
+kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_density_rough) %>% 
+  select("Name", "geometry")
 
 
 # Combine all () grants

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>KYCC_calfire-jefferson</name>
+    <Style id="poly-0288D1-2101-23-nodesc-normal">
+      <LineStyle>
+        <color>ffd18802</color>
+        <width>2.101</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>17d18802</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="poly-0288D1-2101-23-nodesc-highlight">
+      <LineStyle>
+        <color>ffd18802</color>
+        <width>3.1515</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>17d18802</color>
+        <fill>1</fill>
+        <outline>1</outline>
+      </PolyStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="poly-0288D1-2101-23-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#poly-0288D1-2101-23-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#poly-0288D1-2101-23-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Placemark>
+      <name>KYCC: CalFire Jefferson</name>
+      <styleUrl>#poly-0288D1-2101-23-nodesc</styleUrl>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <tessellate>1</tessellate>
+            <coordinates>
+              -118.3415533,34.0345943,0
+              -118.3429695,34.0326383,0
+              -118.3352019,34.0326738,0
+              -118.3352877,34.0225373,0
+              -118.3272625,34.0210078,0
+              -118.3272625,34.0107631,0
+              -118.323486,34.0106564,0
+              -118.323643,33.989064,0
+              -118.2805244,33.9892887,0
+              -118.2810735,34.005717,0
+              -118.2806784,34.015955,0
+              -118.2745799,34.0272305,0
+              -118.2739187,34.0386841,0
+              -118.2852061,34.0369189,0
+              -118.3108481,34.0375291,0
+              -118.3155474,34.0368572,0
+              -118.3268339,34.0353352,0
+              -118.3415533,34.0345943,0
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+  </Document>
+</kml>
