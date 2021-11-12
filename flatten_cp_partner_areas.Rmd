@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(sf)
 library(tmap)
-library(rosm)
 ```
 
 # Creating City Plants Partner Planting Boundaries
@@ -29,7 +28,7 @@ la_city_outline <- st_read(dsn = "data_general/City_Boundary.kml") %>%
   mutate(Name = "City of LA Outline") %>% 
   select("Name", "geometry")
 
-tmap_mode("plot") +
+tmap_mode("view") +
 tm_shape(la_city_outline) +
   tm_polygons()
 ```
@@ -268,23 +267,8 @@ st_write(tp, "grant_area_data/tp.kml", append = FALSE)
 # Mapping All City Plants Nonprofit Planting Partner Areas
 
 ```{r Create LA Base Map, warning = FALSE}
-# Create Los Angeles bounding box
-bbox_poly = st_polygon(list(rbind(c(-118.735904, 34.349321), #left, top
-                                  c(-118.735904, 34.349321), #right, top
-                                  c(-118.152680, 33.704487), #right, bottom
-                                  c(-118.152680, 33.704487), #left, bottom
-                                  c(-118.735904, 34.349321))) #left, top
-                       )
-
-LA_zoom <- osm.raster(st_bbox(st_sfc(bbox_poly, 
-                                     crs = 4326)))
-
-
 # Create zoom-able map of all partner areas
-tmap_mode("view") +
-  tm_shape(LA_zoom) +
-  tm_rgb() +
-  tm_shape(city_plants_partner_boundaries) +
+tm_shape(city_plants_partner_boundaries) +
   tm_fill(col = "Name", alpha = 0.4) +
   tm_borders(col = "black", alpha = 0.5)
 ```
