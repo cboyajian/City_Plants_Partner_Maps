@@ -136,6 +136,8 @@ tm_shape(tp_grants) +
 ```{r Save TP grants to SHP and KML, eval=FALSE}
 # Save TP grants to shp and kml
 st_write(tp_grants, "grant_area_flattened/TP_Grants.shp", append = FALSE)
+
+st_write(tp_grants, "grant_area_flattened/TP_Grants.kml", append = FALSE)
 ```
 
 
@@ -170,6 +172,8 @@ tm_shape(lacc_valley_grants) +
 ```{r Save LACC_Valley grants to SHP and KML, eval=FALSE}
 # Save LACC_Valley grants to shp and kml
 st_write(lacc_valley_grants, "grant_area_flattened/LACC_Valley_Grants.shp", append = FALSE)
+
+st_write(lacc_valley_grants, "grant_area_flattened/LACC_Valley_Grants.kml", append = FALSE)
 ```
 
 
@@ -232,6 +236,8 @@ tm_shape(hlabt_grants) +
 ```{r Save HLABT grants to SHP and KML, eval=FALSE}
 # Save HLABT grants to shp and kml
 st_write(hlabt_grants, "grant_area_flattened/HLABT_Grants.shp", append = FALSE)
+
+st_write(hlabt_grants, "grant_area_flattened/HLABT_Grants.kml", append = FALSE)
 ```
 
 
@@ -336,6 +342,8 @@ tm_shape(net_area) +
 ```{r Save NET grants to SHP and KML, eval=FALSE}
 # Save NET grants to shp and kml
 st_write(net_grants, "grant_area_flattened/NET_Grants.shp", append = FALSE)
+
+st_write(net_grants, "grant_area_flattened/NET_Grants.kml", append = FALSE)
 ```
 
 
@@ -346,68 +354,42 @@ lasan_ggla_rough <- st_read(dsn = "data_general/LASAN_GGLA_minus-kycc.kml") %>%
   select("Name", "geometry") %>% 
   mutate(Name = "LASAN-GGLA")
 
-lasan_ggla <- st_union(lasan_ggla_rough)
+lasan_ggla <- st_collection_extract(st_union(lasan_ggla_rough))
+
+
+# Combine all LASAN grants
+lasan_grants <- rbind(lasan_boyle_heights)
+
 
 tm_shape(lasan_ggla_rough) +
   tm_polygons()
 ```
 
-
-
-
-
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save LASAN grants to SHP and KML, eval=FALSE}
 # Save LASAN grants to shp and kml
-###st_write(kycc_grants, "grant_area_flattened/KYCC_Grants.shp", append = FALSE)
+###st_write(lasan_grants, "grant_area_flattened/LASAN_Grants.shp", append = FALSE)
 
-###st_write(kycc_grants, "grant_area_flattened/KYCC_Grants.kml", append = FALSE)
+###st_write(lasan_grants, "grant_area_flattened/LASAN_Grants.kml", append = FALSE)
 ```
 
 
+## Combining All Grants
+```{r All grants combined}
+all_partner_grants <- rbind(kycc_grants, tp_grants, hlabt_grants, net_grants, lasan_boyle_heights)
+```
 
+#### Save to SHP and KML Files (NOTE: have to run manually)
+```{r Save all grants to SHP and KML, eval=FALSE}
+# Save all grants to shp and kml
+st_write(all_partner_grants, "grant_area_flattened/City-Plants_Partner_Grants.shp", append = FALSE)
 
-
-
-
-
-
-
-
-
-
-
-
-## Saving all grants to ShapeFile and KLM
-
-```{r}
-
-
+st_write(all_partner_grants, "grant_area_flattened/City-Plants_Partner_Grants.kml", append = FALSE)
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Combining and Mapping All Grants
-
-```{r}
-all_partner_grants <- rbind(kycc_grants, tp_grants, hlabt_cf13, hlabt_cf2467, hlabt_cf267)
-
+## Mapping all grant areas
+```{r Map all grants}
 tm_shape(la_city_outline) +
   tm_polygons(col = "lightgrey", alpha = 0.5) +
   tm_shape(all_partner_grants) +
