@@ -19,7 +19,6 @@ library(tmap)
 
 
 ## Creating Los Angeles Outline
-
 ```{r Create LA outlines}
 la_cd_outline <- st_read(dsn = "data_general/LA_City_Council_Districts_(Adopted_2012).kml")
 
@@ -39,7 +38,6 @@ tm_shape(la_city_outline) +
 
 
 ## Creating KYCC Grant Areas
-
 ```{r KYCC grants}
 # Read in full partner area
 kycc_area <- st_read(dsn = "grant_area_data/kycc.kml") %>% 
@@ -102,6 +100,7 @@ tm_shape(kycc_grants) +
   tm_borders(col = "darkred", alpha = 0.75) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
+
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save KYCC grants to SHP and KML, eval=FALSE}
 # Save KYCC grants to shp and kml
@@ -112,7 +111,6 @@ st_write(kycc_grants, "grant_area_flattened/KYCC_Grants.kml", append = FALSE)
 
 
 ## Creating TP Grant Areas
-
 ```{r TP grants}
 # Read in full partner area
 tp_area <- st_read(dsn = "grant_area_data/tp.kml") %>% 
@@ -134,6 +132,12 @@ tm_shape(tp_grants) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
 
+#### Save to SHP and KML Files (NOTE: have to run manually)
+```{r Save TP grants to SHP and KML, eval=FALSE}
+# Save TP grants to shp and kml
+st_write(tp_grants, "grant_area_flattened/TP_Grants.shp", append = FALSE)
+```
+
 
 ## Creating LACC Grants Areas
 ```{r LACC_Valley}
@@ -146,7 +150,7 @@ lacc_valley_tcc_rough <- st_read(dsn = "grant_area_data/lacc-valley_tcc-project.
 
 lacc_valley_tcc <- st_intersection(lacc_valley_area, lacc_valley_tcc_rough) %>% 
   select("Name", "geometry") %>% 
-  mutate(Name = "KYCC_CalFire-Jefferson")
+  mutate(Name = "LACC-Valley_TCC-project")
 
 # Combine all () grants
 lacc_valley_grants <- lacc_valley_tcc
@@ -162,9 +166,14 @@ tm_shape(lacc_valley_grants) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
 
+#### Save to SHP and KML Files (NOTE: have to run manually)
+```{r Save LACC_Valley grants to SHP and KML, eval=FALSE}
+# Save LACC_Valley grants to shp and kml
+st_write(lacc_valley_grants, "grant_area_flattened/LACC_Valley_Grants.shp", append = FALSE)
+```
+
 
 ## Creating HLABT Grant Areas
-
 ```{r HLABT}
 # Read in full partner area
 hlabt_area <- st_read(dsn = "grant_area_data/hlabt.kml") %>% 
@@ -191,13 +200,13 @@ hlabt_area_smaller <- st_difference(hlabt_area, hlabt_cf267_rough)
 
 
 # Create CalFire-CD 13 area
-hlabt_cf13 <- st_intersection(hlabt_area_smaller, cd13) %>% 
+hlabt_cf13 <- st_intersection(hlabt_area, cd13) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "HLABT_CalFire-CDs13")
 
 
 # Create CalFire-CDs 2/4/6/7 area
-hlabt_cf2467 <- st_intersection(hlabt_area_smaller, cd4) %>% 
+hlabt_cf2467 <- st_intersection(hlabt_area, cd4) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "HLABT_CalFire-CDs24//6/7")
 
@@ -210,91 +219,146 @@ hlabt_area_smaller <- st_difference(hlabt_area_smaller, cd13)
 
 
 # Map check
-tm_shape(kycc_grants) +
+tm_shape(hlabt_grants) +
   tm_borders(col = NA) +
   tm_fill(col = "Name") +
   tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
-  tm_shape(kycc_area) +
+  tm_shape(hlabt_area) +
   tm_borders(col = "darkred", alpha = 0.75) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
 
+#### Save to SHP and KML Files (NOTE: have to run manually)
+```{r Save HLABT grants to SHP and KML, eval=FALSE}
+# Save HLABT grants to shp and kml
+st_write(hlabt_grants, "grant_area_flattened/HLABT_Grants.shp", append = FALSE)
+```
 
-## Creating LASAN Boyle Heights area
 
+## Creating NET area and LASAN Boyle Heights area
 ```{r}
 # Read in full NET partner area
 net_area <- st_read(dsn = "grant_area_data/net.kml") %>% 
   select("Name", "geometry")
 
+
+# Create NET_Ramona-Gardens
+net_ramona_gardens_rough <- st_read(dsn = "grant_area_data/NET_ramona-gardens.kml")
+
+net_ramona_gardens <- st_intersection(net_area, net_ramona_gardens_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET_Ramona-gardens")
+
+# Remove NET_Ramona-gardens from NET area
+net_area_smaller <- st_difference(net_area, net_ramona_gardens_rough)
+
+
+# Create NET_Ascot-Hills
+net_ascot_hills_rough <- st_read(dsn = "grant_area_data/NET_ascot-hills.kml")
+
+net_ascot_hills <- st_intersection(net_area_smaller, net_ascot_hills_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET_Ascot-Hills")
+
+# Remove NET_Ascot-Hills from NET area
+net_area_smaller <- st_difference(net_area_smaller, net_ascot_hills_rough)
+
+
+# Create NET_Buchanan-ES
+net_buchanan_rough <- st_read(dsn = "grant_area_data/NET_buchanan-es.kml")
+
+net_buchanan <- st_intersection(net_area_smaller, net_buchanan_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET_Buchanan-ES")
+
+# Remove NET_Buchanan-ES from NET area
+net_area_smaller <- st_difference(net_area_smaller, net_buchanan_rough)
+
+
+#Create NET_SCLA-Greening area
+net_scla_rough <- st_read(dsn = "grant_area_data/NET_scla-greening.kml")
+
+net_scla <- st_intersection(net_area_smaller, net_scla_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET_SCLA-Greening")
+
+# Remove LASAN Boyle Heights from NET area
+net_area_smaller <- st_difference(net_area_smaller, net_scla_rough)
+
+
+#Create NET_Watts-Rising area
+net_watts_rough <- st_read(dsn = "grant_area_data/NET_watts-rising.kml")
+
+net_watts <- st_intersection(net_area_smaller, net_watts_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET_Watts-Rising")
+
+# Remove LASAN Boyle Heights from NET area
+net_area_smaller <- st_difference(net_area_smaller, net_watts_rough)
+
+
+
 #Create LASAN Boyle Heights area
 lasan_boyle_heights_rough <- st_read(dsn = "grant_area_data/lasan_boyle-heights.kml")
 
-lasan_boyle_heights <- st_intersection(net_area, lasan_boyle_heights_rough) %>% 
+lasan_boyle_heights <- st_intersection(net_area_smaller, lasan_boyle_heights_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LASAN_Boyle-Heights")
 
 # Remove LASAN Boyle Heights from NET area
-net_area_smaller <- st_difference(net_area, kycc_calfire_jefferson_rough)
+net_area_smaller <- st_difference(net_area_smaller, lasan_boyle_heights_rough)
+
+
+
+#Create NET CalFire area
+net_calfire <- net_area_smaller %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET_CalFire")
+
+
+# Combine all NET grants
+net_grants <- rbind(net_ascot_hills, net_buchanan, net_ramona_gardens, net_scla, net_watts, net_calfire)
 
 
 # Map check
 tm_shape(net_area) +
   tm_polygons(col = "grey", alpha = 0.5) +
-  tm_shape(lasan_boyle_heights) +
+  tm_shape(net_grants) +
   tm_borders(col = "darkred") +
   tm_fill(col = "Name") +
+  tm_shape(lasan_boyle_heights) +
+  tm_borders(col = "darkred") +
+  tm_fill(col = "blue") +
   tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
 ```
 
-
-
-# TEMPLATE
-
-```{r () grants}
-# Read in full partner area
-###kycc_area <- st_read(dsn = "grant_area_data/kycc.kml") %>% 
-###  select("Name", "geometry")
-
-
-# Create () area
-###kycc_calfire_jefferson_rough <- st_read(dsn = "grant_area_data/kycc_calfire-jeffereson.kml")
-
-###kycc_calfire_jefferson <- st_intersection(kycc_area, kycc_calfire_jefferson_rough) %>% 
-###  select("Name", "geometry") %>% 
-###  mutate(Name = "KYCC_CalFire-Jefferson")
-
-# Remove () from () area
-###kycc_area_smaller <- st_difference(kycc_area, kycc_calfire_jefferson_rough)
-
-
-# Create () area
-###kycc_calfire_sla_rough <- st_read(dsn = "grant_area_data/kycc_calfire-sla.kml")
-
-###kycc_calfire_sla <- st_intersection(kycc_area_smaller, kycc_calfire_sla_rough) %>% 
-###  select("Name", "geometry") %>% 
-###  mutate(Name = "KYCC_CalFire-SLA")
-
-# Remove () area from () area
-###kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_sla_rough)
-
-
-# Combine all () grants
-###kycc_grants <- rbind(kycc_calfire_jefferson, kycc_calfire_sla, kycc_calfire_ambassadors, kycc_calfire_density)
-
-
-# Map check
-###tm_shape(kycc_area) +
-###  tm_polygons(col = "grey", alpha = 0.5) +
-###  tm_shape(kycc_grants) +
-###  tm_borders(col = "darkred") +
-###  tm_fill(col = "Name") +
-###  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
+#### Save to SHP and KML Files (NOTE: have to run manually)
+```{r Save NET grants to SHP and KML, eval=FALSE}
+# Save NET grants to shp and kml
+st_write(net_grants, "grant_area_flattened/NET_Grants.shp", append = FALSE)
 ```
 
+
+## Create LASAN Grants
+```{r}
+# Read in LASAN GGLA
+lasan_ggla_rough <- st_read(dsn = "data_general/LASAN_GGLA_minus-kycc.kml") %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-GGLA")
+
+lasan_ggla <- st_union(lasan_ggla_rough)
+
+tm_shape(lasan_ggla_rough) +
+  tm_polygons()
+```
+
+
+
+
+
 #### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save () grants to SHP and KML, eval=FALSE}
-# Save () grants to shp and kml
+```{r Save LASAN grants to SHP and KML, eval=FALSE}
+# Save LASAN grants to shp and kml
 ###st_write(kycc_grants, "grant_area_flattened/KYCC_Grants.shp", append = FALSE)
 
 ###st_write(kycc_grants, "grant_area_flattened/KYCC_Grants.kml", append = FALSE)
