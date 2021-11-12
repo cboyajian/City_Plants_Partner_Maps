@@ -35,6 +35,64 @@ tm_shape(la_city_outline) +
 ```
 
 
+## Creating NET Area
+
+```{r NET}
+# Create Watts Rising portion of NET
+net_watts_rough <- st_read(dsn = "partner_area_data/NET_Watts.kml") %>% 
+  select("Name", "geometry")
+
+net_watts <- st_intersection(la_city_outline, net_watts_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET")
+
+la_city_outline_smaller <- st_difference(la_city_outline, net_watts_rough) %>% 
+  select("Name", "geometry")
+
+
+# Adding in SCLA Greening to NET
+net_scla_greening_rough <- st_read(dsn = "partner_area_data/net_scla-greening.kml") %>% 
+  select("Name", "geometry")
+
+net_scla_greening <- st_intersection(la_city_outline_smaller, net_scla_greening_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET")
+
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, net_scla_greening_rough) %>% 
+  select("Name", "geometry")
+
+
+# Adding in main NET Area
+net_rough <- st_read(dsn = "partner_area_data/NET.kml") %>% 
+  select("Name", "geometry")
+
+net_main <- st_intersection(la_city_outline_smaller, net_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET")
+
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, net_rough) %>% 
+  select("Name", "geometry")
+
+
+# Combining all areas
+net_temp <- st_union(net_main, net_watts) %>% 
+  select("geometry") %>% 
+  mutate(Name = "NET", .before = "geometry")
+
+net <- st_union(net_temp, net_scla_greening) %>% 
+  select("geometry") %>% 
+  mutate(Name = "NET", .before = "geometry")
+
+
+# Map check
+tm_shape(net) +
+  tm_polygons()
+
+tm_shape(la_city_outline_smaller) +
+  tm_polygons()
+```
+
+
 ## Creating LACC Areas
 
 ```{r LACC_ELA}
@@ -42,11 +100,11 @@ tm_shape(la_city_outline) +
 lacc_rough <- st_read(dsn = "partner_area_data/LACC.kml", layer = "LACC") %>% 
   select("Name", "geometry")
 
-lacc_ela_main <- st_intersection(la_city_outline, lacc_rough) %>% 
+lacc_ela_main <- st_intersection(la_city_outline_smaller, lacc_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LACC_ELA")
   
-la_city_outline_smaller <- st_difference(la_city_outline, lacc_rough) %>% 
+la_city_outline_smaller <- st_difference(la_city_outline_smaller, lacc_rough) %>% 
   select("Name", "geometry")
 
 
@@ -134,47 +192,6 @@ tm_shape(la_city_outline_smaller) +
   tm_polygons()
 ```
 
-## Creating NET Area
-
-```{r NET}
-# Create Watts Rising portion of NET
-net_watts_rough <- st_read(dsn = "partner_area_data/NET_Watts.kml") %>% 
-  select("Name", "geometry")
-
-net_watts <- st_intersection(la_city_outline_smaller, net_watts_rough) %>% 
-  select("Name", "geometry") %>% 
-  mutate(Name = "NET")
-
-la_city_outline_smaller <- st_difference(la_city_outline_smaller, net_watts_rough) %>% 
-  select("Name", "geometry")
-
-
-# Adding in SCLA Greening to NET
-
-
-# Adding in main NET Area
-net_rough <- st_read(dsn = "partner_area_data/NET.kml") %>% 
-  select("Name", "geometry")
-
-net_main <- st_intersection(la_city_outline_smaller, net_rough) %>% 
-  select("Name", "geometry") %>% 
-  mutate(Name = "NET")
-
-net <- st_union(net_main, net_watts) %>% 
-  select("geometry") %>% 
-  mutate(Name = "NET", .before = "geometry")
-
-la_city_outline_smaller <- st_difference(la_city_outline_smaller, net_rough) %>% 
-  select("Name", "geometry")
-
-
-# Map check
-tm_shape(net) +
-  tm_polygons()
-
-tm_shape(la_city_outline_smaller) +
-  tm_polygons()
-```
 
 ## Creating HLABT Area
 

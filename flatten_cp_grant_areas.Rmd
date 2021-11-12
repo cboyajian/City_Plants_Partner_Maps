@@ -87,7 +87,7 @@ kycc_calfire_density <- st_intersection(kycc_area_smaller, kycc_calfire_density_
 kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_density_rough)
 
 
-# Create KYCC all grants df
+# Combine all () grants
 kycc_grants <- rbind(kycc_calfire_jefferson, kycc_calfire_sla, kycc_calfire_ambassadors, kycc_calfire_density)
 
 
@@ -144,7 +144,7 @@ lacc_valley_tcc <- st_intersection(lacc_valley_area, lacc_valley_tcc_rough) %>%
   select("Name", "geometry") %>% 
   mutate(Name = "KYCC_CalFire-Jefferson")
 
-# Create () all grants df
+# Combine all () grants
 lacc_valley_grants <- lacc_valley_tcc
 
 
@@ -162,15 +162,65 @@ tm_shape(lacc_valley_area) +
 
 ```{r HLABT}
 # Read in full partner area
-###kycc_area <- st_read(dsn = "grant_area_data/kycc.kml") %>% 
-###  select("Name", "geometry")
+hlabt_area <- st_read(dsn = "grant_area_data/hlabt.kml") %>% 
+  select("Name", "geometry")
 
 
-# Create () area
+# Create council district dfs
+cd2 <- la_cd_outline %>% slice(2)
+cd4 <- la_cd_outline %>% slice(4)
+cd6 <- la_cd_outline %>% slice(6)
+cd7 <- la_cd_outline %>% slice(7)
+cd13 <- la_cd_outline %>% slice(13)
+
+
+# Create CalFire-CDs 2/6/7 area
+hlabt_cf267_rough <- rbind(cd2, cd6, cd7) %>% st_union()
+
+hlabt_cf267 <- st_intersection(hlabt_area, hlabt_cf267_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "HLABT_CalFire-CDs2/6/7")
+
+# Remove CalFire-CD2-6-7 from HLABT area
+hlabt_area_smaller <- st_difference(hlabt_area, hlabt_cf267_rough)
+
+
+# Create CalFire-CD 13 area
+hlabt_cf13 <- st_intersection(hlabt_area_smaller, cd13) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "HLABT_CalFire-CDs13")
+
+
+# Create CalFire-CDs 2/4/6/7 area
+hlabt_cf2467 <- st_intersection(hlabt_area_smaller, cd4) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "HLABT_CalFire-CDs24//6/7")
+
+
+# Combine all HLABT grants
+hlabt_grants <- rbind(hlabt_cf267, hlabt_cf2467, hlabt_cf13)
+
+# Remove CalFire-CD2-6-7 from HLABT area
+hlabt_area_smaller <- st_difference(hlabt_area_smaller, cd13)
+
+
+# Map check
+tm_shape(hlabt_area) +
+  tm_polygons(col = "grey", alpha = 0.5) +
+  tm_shape(hlabt_grants) +
+  tm_borders(col = "darkred") +
+  tm_fill(col = "Name") +
+  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
 ```
 
 
 ## Creating NET Grant Areas
+```{r}
+# Read in full partner area
+net_area <- st_read(dsn = "grant_area_data/net.kml") %>% 
+  select("Name", "geometry")
+
+```
 
 
 
@@ -204,7 +254,7 @@ tm_shape(lacc_valley_area) +
 ###kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_sla_rough)
 
 
-# Create () all grants df
+# Combine all () grants
 ###kycc_grants <- rbind(kycc_calfire_jefferson, kycc_calfire_sla, kycc_calfire_ambassadors, kycc_calfire_density)
 
 
