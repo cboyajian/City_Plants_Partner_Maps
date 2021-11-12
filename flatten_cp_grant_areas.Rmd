@@ -28,6 +28,9 @@ la_city_outline <- st_read(dsn = "data_general/City_Boundary.kml") %>%
   mutate(Name = "City of LA Outline") %>% 
   select("Name", "geometry")
 
+
+tmap_mode("view")
+
 tm_shape(la_cd_outline) +
   tm_polygons(col = "Name")
 
@@ -118,7 +121,7 @@ tp_area <- st_read(dsn = "grant_area_data/tp.kml") %>%
 
 
 # Create TP Watts Rising Area
-tp_grants <- st_intersection(tp_area, tp_area)
+tp_grants <- tp_area
 
 
 # Map check
@@ -317,7 +320,7 @@ net_area <- st_read(dsn = "grant_area_data/net.kml") %>%
 ## Combining and Mapping All Grants
 
 ```{r}
-all_partner_grants <- rbind(kycc_grants, tp_grants)
+all_partner_grants <- rbind(kycc_grants, tp_grants, hlabt_cf13, hlabt_cf2467, hlabt_cf267)
 
 tm_shape(la_city_outline) +
   tm_polygons(col = "lightgrey", alpha = 0.5) +
