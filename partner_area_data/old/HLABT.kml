@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
-    <name>NET_scla-greening</name>
-    <Style id="poly-F57C00-2801-64-nodesc-normal">
+    <name>HLABT</name>
+    <Style id="poly-000000-1200-77-nodesc-normal">
       <LineStyle>
-        <color>ff007cf5</color>
-        <width>2.801</width>
+        <color>ff000000</color>
+        <width>1.2</width>
       </LineStyle>
       <PolyStyle>
-        <color>40007cf5</color>
+        <color>4d000000</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-F57C00-2801-64-nodesc-highlight">
+    <Style id="poly-000000-1200-77-nodesc-highlight">
       <LineStyle>
-        <color>ff007cf5</color>
-        <width>4.2015</width>
+        <color>ff000000</color>
+        <width>1.8</width>
       </LineStyle>
       <PolyStyle>
-        <color>40007cf5</color>
+        <color>4d000000</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,30 +30,31 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-F57C00-2801-64-nodesc">
+    <StyleMap id="poly-000000-1200-77-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-F57C00-2801-64-nodesc-normal</styleUrl>
+        <styleUrl>#poly-000000-1200-77-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-F57C00-2801-64-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-000000-1200-77-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
-      <name>NET: SCLA Greening</name>
-      <styleUrl>#poly-F57C00-2801-64-nodesc</styleUrl>
+      <name>HLABT</name>
+      <styleUrl>#poly-000000-1200-77-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <tessellate>1</tessellate>
             <coordinates>
-              -118.2350123,33.9873915,0
-              -118.2361945,34.0039586,0
-              -118.265241,34.003888,0
-              -118.265197,33.989232,0
-              -118.2558981,33.9893446,0
-              -118.2350123,33.9873915,0
+              -118.5256067,34.3486097,0
+              -118.5118738,34.3089168,0
+              -118.5091272,34.1885893,0
+              -118.4487024,34.0407832,0
+              -118.1191126,34.0504554,0
+              -118.1204858,34.3321678,0
+              -118.5256067,34.3486097,0
             </coordinates>
           </LinearRing>
         </outerBoundaryIs>

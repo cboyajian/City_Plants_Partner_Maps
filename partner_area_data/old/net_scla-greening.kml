@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
-    <name>NET_scla-greening</name>
+    <name>net_scla-greening</name>
     <Style id="poly-F57C00-2801-64-nodesc-normal">
       <LineStyle>
         <color>ff007cf5</color>
@@ -48,12 +48,11 @@
           <LinearRing>
             <tessellate>1</tessellate>
             <coordinates>
-              -118.2350123,33.9873915,0
-              -118.2361945,34.0039586,0
+              -118.2301414,33.9892597,0
+              -118.2303365,34.0038518,0
               -118.265241,34.003888,0
               -118.265197,33.989232,0
-              -118.2558981,33.9893446,0
-              -118.2350123,33.9873915,0
+              -118.2301414,33.9892597,0
             </coordinates>
           </LinearRing>
         </outerBoundaryIs>
