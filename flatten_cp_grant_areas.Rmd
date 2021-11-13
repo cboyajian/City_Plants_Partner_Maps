@@ -382,24 +382,31 @@ lasan_ggla_rough <- st_read(dsn = "data_general/LASAN_GGLA_minus-kycc.kml") %>%
   mutate(Name = "LASAN-GGLA")
 
 
-#Create full LASAN_TREE area
+#Create full LASAN_GGLA area
 lasan_ggla_buffered <- st_buffer(lasan_ggla_rough, dist = 5)
 
 lasan_ggla_unioned <- st_union(lasan_ggla_buffered) %>% 
   st_make_valid()
 
-# Save to KML File
+# Save to KML Files
 st_write(lasan_ggla_unioned, "grant_area_data/LASAN_GGLA.kml", append = FALSE)
+st_write(all_np_grants_unioned, "grant_area_data/ALL_NP_Grants.kml", append = FALSE)
 
-# Read saved LASAN_TREE KML file
+
+# Read back in saved KML file
 lasan_ggla_gmaps <- st_read("grant_area_data/LASAN_GGLA.kml")
+all_np_grants_gmaps <- st_read("grant_area_data/ALL_NP_Grants.kml")
 
-lasan_ggla_minus_city <- st_intersection(lasan_ggla_gmaps, la_city_outline)
 
-lasan_ggla_smaller <- st_difference(lasan_ggla_minus_city, all_np_grants) %>%
+# Create non-overlapping LASAN_GGLA area
+lasan_ggla_minus_city <- st_intersection(lasan_ggla_gmaps, la_city_outline) %>%
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-GGLA") 
+
+lasan_ggla_smaller <- st_difference(lasan_ggla_minus_city, all_np_grants_gmaps) %>% ### it is breaking here
   st_make_valid() %>% 
   select("Name", "geometry") %>% 
-  mutate(Name = "LASAN-GGLA")
+  mutate(Name = "LASAN-GGLA")  
 
 lasan_ggla <- st_difference(lasan_ggla_smaller, lasan_boyle_heights_rough) %>% 
   select("Name", "geometry") %>% 
@@ -446,7 +453,7 @@ lasan_tree <- st_difference(lasan_tree_smaller, lasan_boyle_heights_rough) %>%
 
 
 ```{r}
-tm_shape(lasan_ggla_rough) +
+tm_shape(all_np_grants) +
   tm_borders(col = "red")
 ```
 
