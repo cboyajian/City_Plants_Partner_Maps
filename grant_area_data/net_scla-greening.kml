@@ -2,13 +2,13 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>NET_scla-greening</name>
-    <Style id="poly-F57C00-2801-64-nodesc-normal">
+    <Style id="poly-FF0000-1000-28-nodesc-normal">
       <LineStyle>
-        <color>ff007cf5</color>
-        <width>2.801</width>
+        <color>ff0000ff</color>
+        <width>1</width>
       </LineStyle>
       <PolyStyle>
-        <color>40007cf5</color>
+        <color>1c0000ff</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-F57C00-2801-64-nodesc-highlight">
+    <Style id="poly-FF0000-1000-28-nodesc-highlight">
       <LineStyle>
-        <color>ff007cf5</color>
-        <width>4.2015</width>
+        <color>ff0000ff</color>
+        <width>1.5</width>
       </LineStyle>
       <PolyStyle>
-        <color>40007cf5</color>
+        <color>1c0000ff</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,30 +30,29 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-F57C00-2801-64-nodesc">
+    <StyleMap id="poly-FF0000-1000-28-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-F57C00-2801-64-nodesc-normal</styleUrl>
+        <styleUrl>#poly-FF0000-1000-28-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-F57C00-2801-64-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-FF0000-1000-28-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name>NET: SCLA Greening</name>
-      <styleUrl>#poly-F57C00-2801-64-nodesc</styleUrl>
+      <styleUrl>#poly-FF0000-1000-28-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <tessellate>1</tessellate>
             <coordinates>
-              -118.2350123,33.9873915,0
-              -118.2361945,34.0039586,0
-              -118.265241,34.003888,0
-              -118.265197,33.989232,0
-              -118.2558981,33.9893446,0
-              -118.2350123,33.9873915,0
+              -118.2369432,33.9885663,0
+              -118.2384685,34.0042436,0
+              -118.2654556,34.0042082,0
+              -118.2654545,33.9888762,0
+              -118.2369432,33.9885663,0
             </coordinates>
           </LinearRing>
         </outerBoundaryIs>

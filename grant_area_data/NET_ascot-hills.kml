@@ -2,13 +2,13 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>NET_ascot-hills</name>
-    <Style id="poly-FFD600-2601-51-nodesc-normal">
+    <Style id="poly-F9A825-2601-51-nodesc-normal">
       <LineStyle>
-        <color>ff00d6ff</color>
+        <color>ff25a8f9</color>
         <width>2.601</width>
       </LineStyle>
       <PolyStyle>
-        <color>3300d6ff</color>
+        <color>3325a8f9</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-FFD600-2601-51-nodesc-highlight">
+    <Style id="poly-F9A825-2601-51-nodesc-highlight">
       <LineStyle>
-        <color>ff00d6ff</color>
+        <color>ff25a8f9</color>
         <width>3.9015</width>
       </LineStyle>
       <PolyStyle>
-        <color>3300d6ff</color>
+        <color>3325a8f9</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,36 +30,37 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-FFD600-2601-51-nodesc">
+    <StyleMap id="poly-F9A825-2601-51-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-FFD600-2601-51-nodesc-normal</styleUrl>
+        <styleUrl>#poly-F9A825-2601-51-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-FFD600-2601-51-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-F9A825-2601-51-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name>NET: Ascot Hills</name>
-      <styleUrl>#poly-FFD600-2601-51-nodesc</styleUrl>
+      <styleUrl>#poly-F9A825-2601-51-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <tessellate>1</tessellate>
             <coordinates>
-              -118.1929055,34.0638906,0
-              -118.1859539,34.0626022,0
-              -118.1860082,34.0664049,0
-              -118.1875853,34.0666004,0
-              -118.1897204,34.0682179,0
-              -118.1901711,34.0682712,0
-              -118.190965,34.0667604,0
+              -118.1929162,34.0637128,0
+              -118.1861148,34.0624689,0
+              -118.1861369,34.0663605,0
+              -118.1872742,34.0663871,0
+              -118.1879125,34.0666359,0
+              -118.1899457,34.0682446,0
+              -118.1906968,34.0668225,0
+              -118.1910401,34.0665738,0
               -118.1926601,34.0667604,0
               -118.1952136,34.067187,0
               -118.1954282,34.0660671,0
               -118.1929819,34.0655872,0
-              -118.1929055,34.0638906,0
+              -118.1929162,34.0637128,0
             </coordinates>
           </LinearRing>
         </outerBoundaryIs>

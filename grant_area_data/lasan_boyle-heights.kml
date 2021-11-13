@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
-    <name>lasan_boyle-heights</name>
-    <Style id="poly-097138-1801-23-nodesc-normal">
+    <name>LASAN_boyle-heights</name>
+    <Style id="poly-9C27B0-1801-15-nodesc-normal">
       <LineStyle>
-        <color>ff387109</color>
+        <color>ffb0279c</color>
         <width>1.801</width>
       </LineStyle>
       <PolyStyle>
-        <color>17387109</color>
+        <color>0fb0279c</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-097138-1801-23-nodesc-highlight">
+    <Style id="poly-9C27B0-1801-15-nodesc-highlight">
       <LineStyle>
-        <color>ff387109</color>
+        <color>ffb0279c</color>
         <width>2.7015</width>
       </LineStyle>
       <PolyStyle>
-        <color>17387109</color>
+        <color>0fb0279c</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,46 +30,41 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-097138-1801-23-nodesc">
+    <StyleMap id="poly-9C27B0-1801-15-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-097138-1801-23-nodesc-normal</styleUrl>
+        <styleUrl>#poly-9C27B0-1801-15-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-097138-1801-23-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-9C27B0-1801-15-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name>LASAN: Boyle Heights Grant</name>
-      <styleUrl>#poly-097138-1801-23-nodesc</styleUrl>
+      <styleUrl>#poly-9C27B0-1801-15-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <tessellate>1</tessellate>
             <coordinates>
-              -118.1889902,34.01251,0
-              -118.1897955,34.0432754,0
-              -118.191716,34.0491159,0
-              -118.1917912,34.0506375,0
-              -118.1919093,34.0610122,0
-              -118.19251,34.061608,0
-              -118.1926387,34.0637326,0
-              -118.2019182,34.0654899,0
-              -118.2037473,34.0655914,0
-              -118.2058768,34.0654263,0
-              -118.2081401,34.0650425,0
-              -118.2141211,34.0607822,0
-              -118.2187927,34.0571793,0
-              -118.2219508,34.0560275,0
-              -118.2257954,34.0543245,0
-              -118.228589,34.052917,0
-              -118.230172,34.047913,0
-              -118.2294171,34.0439101,0
-              -118.2220589,34.0132025,0
-              -118.2012192,34.0103134,0
-              -118.189762,34.0125863,0
-              -118.1889902,34.01251,0
+              -118.1911367,34.0149949,0
+              -118.1910857,34.0346766,0
+              -118.1921077,34.0434042,0
+              -118.1919949,34.0502715,0
+              -118.1923812,34.0639103,0
+              -118.2027443,34.0659165,0
+              -118.2064025,34.0656929,0
+              -118.2090306,34.0649003,0
+              -118.2192326,34.0575615,0
+              -118.2261709,34.05468,0
+              -118.228589,34.0528992,0
+              -118.230172,34.0478952,0
+              -118.2294171,34.0438923,0
+              -118.2226382,34.0145365,0
+              -118.2073586,34.0122307,0
+              -118.1909,34.012759,0
+              -118.1911367,34.0149949,0
             </coordinates>
           </LinearRing>
         </outerBoundaryIs>

@@ -71,7 +71,7 @@ kycc_area_smaller <- st_difference(kycc_area_smaller, kycc_calfire_sla_rough) %>
 
 
 # Create CalFire-Ambassadors area
-kycc_calfire_ambassadors_rough <- st_read(dsn = "grant_area_data/KYCC_calfire-ambassador.kml") %>% 
+kycc_calfire_ambassadors_rough <- st_read(dsn = "grant_area_data/KYCC_calfire-ambassadors.kml") %>% 
   select("Name", "geometry")
 
 kycc_calfire_ambassadors <- st_intersection(kycc_area_smaller, kycc_calfire_ambassadors_rough) %>% 
@@ -267,17 +267,6 @@ net_ramona_gardens <- st_intersection(net_area, net_ramona_gardens_rough) %>%
 net_area_smaller <- st_difference(net_area, net_ramona_gardens_rough)
 
 
-# Create NET_Ascot-Hills
-net_ascot_hills_rough <- st_read(dsn = "grant_area_data/NET_ascot-hills.kml")
-
-net_ascot_hills <- st_intersection(net_area_smaller, net_ascot_hills_rough) %>% 
-  select("Name", "geometry") %>% 
-  mutate(Name = "NET_Ascot-Hills")
-
-# Remove NET_Ascot-Hills from NET area
-net_area_smaller <- st_difference(net_area_smaller, net_ascot_hills_rough)
-
-
 # Create NET_Buchanan-ES
 net_buchanan_rough <- st_read(dsn = "grant_area_data/NET_buchanan-es.kml")
 
@@ -287,6 +276,17 @@ net_buchanan <- st_intersection(net_area_smaller, net_buchanan_rough) %>%
 
 # Remove NET_Buchanan-ES from NET area
 net_area_smaller <- st_difference(net_area_smaller, net_buchanan_rough)
+
+
+# Create NET_Ascot-Hills
+net_ascot_hills_rough <- st_read(dsn = "grant_area_data/NET_ascot-hills.kml")
+
+net_ascot_hills <- st_intersection(net_area_smaller, net_ascot_hills_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "NET_Ascot-Hills")
+
+# Remove NET_Ascot-Hills from NET area
+net_area_smaller <- st_difference(net_area_smaller, net_ascot_hills_rough)
 
 
 #Create NET_SCLA-Greening area
@@ -313,7 +313,7 @@ net_area_smaller <- st_difference(net_area_smaller, net_watts_rough)
 
 
 #Create LASAN Boyle Heights area
-lasan_boyle_heights_rough <- st_read(dsn = "grant_area_data/lasan_boyle-heights.kml")
+lasan_boyle_heights_rough <- st_read(dsn = "grant_area_data/LASAN_boyle-heights.kml")
 
 lasan_boyle_heights <- st_intersection(net_area_smaller, lasan_boyle_heights_rough) %>% 
   select("Name", "geometry") %>% 
@@ -323,8 +323,7 @@ lasan_boyle_heights <- st_intersection(net_area_smaller, lasan_boyle_heights_rou
 net_area_smaller <- st_difference(net_area_smaller, lasan_boyle_heights_rough)
 
 
-
-#Create NET CalFire area
+# Create NET CalFire area
 net_calfire <- net_area_smaller %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "NET_CalFire")
@@ -355,22 +354,81 @@ st_write(net_grants, "grant_area_flattened/NET_Grants.kml", append = FALSE)
 ```
 
 
-## Create LASAN Grants
+## Combine all non-profit partner grants
 ```{r}
-# Read in LASAN GGLA
+all_np_grants <- rbind(kycc_grants, tp_grants, hlabt_grants, net_grants, lacc_valley_tcc)
+
+all_np_grants_unioned <- st_union(st_buffer(all_np_grants, dist = 5)) %>% 
+  st_make_valid()
+```
+
+#### Save to SHP and KML Files (NOTE: have to run manually)
+```{r Save all grants to SHP and KML, eval=FALSE}
+# Save all grants to shp and kml
+st_write(all_np_grants, "grant_area_flattened/City-Plants_NP-Partner_Grants.shp", append = FALSE)
+
+st_write(all_np_grants, "grant_area_flattened/City-Plants_NP-Partner_Grants.kml", append = FALSE)
+```
+
+
+
+
+
+
+
+
+## Create LASAN Grants
+```{r LASAN}
+# Read in LASAN_GGLA
 lasan_ggla_rough <- st_read(dsn = "data_general/LASAN_GGLA_minus-kycc.kml") %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LASAN-GGLA")
 
-lasan_ggla <- st_collection_extract(st_union(lasan_ggla_rough))
+# Reroject CRS and buffer
+nad83 <- 4269 # crs based in meters
+wgs84 <- 4326 # crs based in lat, lon
+
+lasan_ggla_nad83 <- st_transform(lasan_ggla_rough, crs = nad83)
+
+lasan_ggla_buffered <- st_buffer(lasan_ggla_nad83, dist = 5)
+
+# Create full LASAN_GGLA area (minus KYCC) 
+lasan_ggla_unioned <- st_union(lasan_ggla_buffered)
+
+lasan_ggla_wgs84 <- st_transform(lasan_ggla_unioned, crs = wgs84)
+
+# Create LASAN_GGLA area w/ no np overlap
+lasan_ggla <- st_difference(lasan_ggla_wgs84, all_np_grants)
 
 
-# Combine all LASAN grants
-lasan_grants <- rbind(lasan_boyle_heights)
+# Read in LASAN_TREE
+lasan_tree_rough <- st_read(dsn = "data_general/LASAN_SHADE-LA_TREEmendous.kml") %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-TREE")
+
+# Reroject CRS and buffer
+nad83 <- 4269 # crs based in meters
+wgs84 <- 4326 # crs based in lat, lon
+
+lasan_tree_nad83 <- st_transform(lasan_tree_rough, crs = nad83)
+
+lasan_tree_buffered <- st_buffer(lasan_tree_nad83, dist = 5)
+
+# Create full LASAN_TREE area (minus KYCC) 
+lasan_tree_unioned <- st_union(lasan_tree_buffered)
+
+lasan_tree_wgs84 <- st_transform(lasan_tree_unioned, crs = wgs84)
+
+# Create LASAN_GGLA area w/ no np overlap
+lasan_tree <- st_difference(lasan_tree_wgs84, all_np_grants_unioned)
 
 
-tm_shape(lasan_ggla_rough) +
-  tm_polygons()
+tm_shape(lasan_ggla) +
+  tm_polygons(col = "goldenrod", alpha = 0.5) +
+  tm_shape(lasan_tree) +
+  tm_polygons(col = "purple", alpha = 0.5)
+  tm_shape(lasan_boyle_heights) +
+  tm_polygons(col = "lightblue", alpha = 0.5)
 ```
 
 #### Save to SHP and KML Files (NOTE: have to run manually)
@@ -387,13 +445,7 @@ tm_shape(lasan_ggla_rough) +
 all_partner_grants <- rbind(kycc_grants, tp_grants, hlabt_grants, net_grants, lasan_boyle_heights)
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save all grants to SHP and KML, eval=FALSE}
-# Save all grants to shp and kml
-st_write(all_partner_grants, "grant_area_flattened/City-Plants_Partner_Grants.shp", append = FALSE)
 
-st_write(all_partner_grants, "grant_area_flattened/City-Plants_Partner_Grants.kml", append = FALSE)
-```
 
 
 ## Mapping all grant areas

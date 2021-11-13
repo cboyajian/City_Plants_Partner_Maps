@@ -2,13 +2,13 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>KYCC_calfire-jefferson</name>
-    <Style id="poly-0288D1-2101-23-nodesc-normal">
+    <Style id="poly-673AB7-2701-0-nodesc-normal">
       <LineStyle>
-        <color>ffd18802</color>
-        <width>2.101</width>
+        <color>ffb73a67</color>
+        <width>2.701</width>
       </LineStyle>
       <PolyStyle>
-        <color>17d18802</color>
+        <color>00b73a67</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-0288D1-2101-23-nodesc-highlight">
+    <Style id="poly-673AB7-2701-0-nodesc-highlight">
       <LineStyle>
-        <color>ffd18802</color>
-        <width>3.1515</width>
+        <color>ffb73a67</color>
+        <width>4.0515</width>
       </LineStyle>
       <PolyStyle>
-        <color>17d18802</color>
+        <color>00b73a67</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,42 +30,50 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-0288D1-2101-23-nodesc">
+    <StyleMap id="poly-673AB7-2701-0-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-0288D1-2101-23-nodesc-normal</styleUrl>
+        <styleUrl>#poly-673AB7-2701-0-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-0288D1-2101-23-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-673AB7-2701-0-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name>KYCC: CalFire Jefferson</name>
-      <styleUrl>#poly-0288D1-2101-23-nodesc</styleUrl>
+      <styleUrl>#poly-673AB7-2701-0-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
             <tessellate>1</tessellate>
             <coordinates>
-              -118.3415533,34.0345943,0
-              -118.3429695,34.0326383,0
-              -118.3352019,34.0326738,0
-              -118.3352877,34.0225373,0
+              -118.341446,34.0348432,0
+              -118.342991,34.0325138,0
+              -118.3350732,34.0325404,0
+              -118.3352341,34.022644,0
               -118.3272625,34.0210078,0
-              -118.3272625,34.0107631,0
-              -118.323486,34.0106564,0
-              -118.323643,33.989064,0
-              -118.2805244,33.9892887,0
-              -118.2810735,34.005717,0
+              -118.3275844,34.0197093,0
+              -118.3271445,34.0182509,0
+              -118.3271874,34.0108076,0
+              -118.3231105,34.0108254,0
+              -118.3230613,34.0053674,0
+              -118.3232244,34.0050041,0
+              -118.3235806,34.004632,0
+              -118.3236591,33.9890062,0
+              -118.2807819,33.989004,0
+              -118.280698,34.0057081,0
               -118.2806784,34.015955,0
-              -118.2745799,34.0272305,0
-              -118.2739187,34.0386841,0
-              -118.2852061,34.0369189,0
+              -118.2744941,34.027515,0
+              -118.2744424,34.0340242,0
+              -118.2738717,34.0376937,0
+              -118.273816,34.038767,0
+              -118.2799272,34.0381573,0
+              -118.2852705,34.0370967,0
               -118.3108481,34.0375291,0
               -118.3155474,34.0368572,0
-              -118.3268339,34.0353352,0
-              -118.3415533,34.0345943,0
+              -118.3268983,34.0355308,0
+              -118.341446,34.0348432,0
             </coordinates>
           </LinearRing>
         </outerBoundaryIs>

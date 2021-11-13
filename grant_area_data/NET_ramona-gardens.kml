@@ -2,13 +2,13 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>NET_ramona-gardens</name>
-    <Style id="poly-F9A825-2301-48-nodesc-normal">
+    <Style id="poly-01579B-2301-0-nodesc-normal">
       <LineStyle>
-        <color>ff25a8f9</color>
+        <color>ff9b5701</color>
         <width>2.301</width>
       </LineStyle>
       <PolyStyle>
-        <color>3025a8f9</color>
+        <color>009b5701</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-F9A825-2301-48-nodesc-highlight">
+    <Style id="poly-01579B-2301-0-nodesc-highlight">
       <LineStyle>
-        <color>ff25a8f9</color>
+        <color>ff9b5701</color>
         <width>3.4515</width>
       </LineStyle>
       <PolyStyle>
-        <color>3025a8f9</color>
+        <color>009b5701</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,19 +30,19 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-F9A825-2301-48-nodesc">
+    <StyleMap id="poly-01579B-2301-0-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-F9A825-2301-48-nodesc-normal</styleUrl>
+        <styleUrl>#poly-01579B-2301-0-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-F9A825-2301-48-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-01579B-2301-0-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name><![CDATA[NET: Ramona Gardens & Boyle Heights]]></name>
-      <styleUrl>#poly-F9A825-2301-48-nodesc</styleUrl>
+      <styleUrl>#poly-01579B-2301-0-nodesc</styleUrl>
       <MultiGeometry>
         <Polygon>
           <outerBoundaryIs>
