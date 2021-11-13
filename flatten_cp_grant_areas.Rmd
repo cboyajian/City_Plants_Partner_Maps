@@ -192,42 +192,41 @@ hlabt_area <- st_read(dsn = "grant_area_data/hlabt.kml") %>%
   select("Name", "geometry")
 
 
-# Create council district dfs
-cd2 <- la_cd_outline %>% slice(2)
-cd4 <- la_cd_outline %>% slice(4)
-cd6 <- la_cd_outline %>% slice(6)
-cd7 <- la_cd_outline %>% slice(7)
-cd13 <- la_cd_outline %>% slice(13)
+# Create CalFire-CD13 area
+hlabt_cf13_rough <- st_read(dsn = "grant_area_data/HLABT_CD13.kml") %>% 
+  select("Name", "geometry")
+
+hlabt_cf13 <- st_intersection(hlabt_area, hlabt_cf13_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "HLABT_CalFire-cd13")
+
+# Remove CalFire-Jefferson from KYCC area
+hlabt_area_smaller <- st_difference(hlabt_area, hlabt_cf13_rough) %>% 
+  select("Name", "geometry")
 
 
 # Create CalFire-CDs 2/6/7 area
-hlabt_cf267_rough <- rbind(cd2, cd6, cd7) %>% st_union()
+hlabt_cf267_rough <- st_read(dsn = "grant_area_data/HLABT_CD267.kml") %>% 
+  select("Name", "geometry")
 
-hlabt_cf267 <- st_intersection(hlabt_area, hlabt_cf267_rough) %>% 
+hlabt_cf267 <- st_intersection(hlabt_area_smaller, hlabt_cf267_rough) %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "HLABT_CalFire-CDs2/6/7")
 
 # Remove CalFire-CD2-6-7 from HLABT area
-hlabt_area_smaller <- st_difference(hlabt_area, hlabt_cf267_rough)
-
-
-# Create CalFire-CD 13 area
-hlabt_cf13 <- st_intersection(hlabt_area, cd13) %>% 
+hlabt_area_smaller <- st_difference(hlabt_area_smaller, hlabt_cf267_rough) %>% 
   select("Name", "geometry") %>% 
-  mutate(Name = "HLABT_CalFire-CDs13")
+  mutate(Name = "HLABT_CalFire-CDs2/4/6/7")
+
+
 
 
 # Create CalFire-CDs 2/4/6/7 area
-hlabt_cf2467 <- st_intersection(hlabt_area, cd4) %>% 
-  select("Name", "geometry") %>% 
-  mutate(Name = "HLABT_CalFire-CDs24//6/7")
+hlabt_cf2467 <- hlabt_area_smaller
 
 
 # Combine all HLABT grants
 hlabt_grants <- rbind(hlabt_cf267, hlabt_cf2467, hlabt_cf13)
-
-# Remove CalFire-CD2-6-7 from HLABT area
-hlabt_area_smaller <- st_difference(hlabt_area_smaller, cd13)
 
 
 # Map check
@@ -360,6 +359,9 @@ all_np_grants <- rbind(kycc_grants, tp_grants, hlabt_grants, net_grants, lacc_va
 
 all_np_grants_unioned <- st_union(st_buffer(all_np_grants, dist = 5)) %>% 
   st_make_valid()
+
+tm_shape(all_np_grants) +
+  tm_polygons(col = "Name")
 ```
 
 #### Save to SHP and KML Files (NOTE: have to run manually)
@@ -372,7 +374,7 @@ st_write(all_np_grants, "grant_area_flattened/City-Plants_NP-Partner_Grants.kml"
 
 
 
-## Create LASAN Grants
+## Create LASAN_GGLA grant area
 ```{r LASAN}
 # Read in LASAN_GGLA
 lasan_ggla_rough <- st_read(dsn = "data_general/LASAN_GGLA_minus-kycc.kml") %>% 
@@ -380,52 +382,72 @@ lasan_ggla_rough <- st_read(dsn = "data_general/LASAN_GGLA_minus-kycc.kml") %>%
   mutate(Name = "LASAN-GGLA")
 
 
-# Create full LASAN_GGLA area (minus KYCC)
+#Create full LASAN_TREE area
 lasan_ggla_buffered <- st_buffer(lasan_ggla_rough, dist = 5)
 
-lasan_ggla_unioned <- st_union(lasan_ggla_buffered)
+lasan_ggla_unioned <- st_union(lasan_ggla_buffered) %>% 
+  st_make_valid()
+
+# Save to KML File
+st_write(lasan_ggla_unioned, "grant_area_data/LASAN_GGLA.kml", append = FALSE)
+
+# Read saved LASAN_TREE KML file
+lasan_ggla_gmaps <- st_read("grant_area_data/LASAN_GGLA.kml")
+
+lasan_ggla_minus_city <- st_intersection(lasan_ggla_gmaps, la_city_outline)
+
+lasan_ggla_smaller <- st_difference(lasan_ggla_minus_city, all_np_grants) %>%
+  st_make_valid() %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-GGLA")
+
+lasan_ggla <- st_difference(lasan_ggla_smaller, lasan_boyle_heights_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-GGLA")
+```
 
 
+
+## Create LASAN_TREEandSHADE grant area
+```{r}
 # Read in LASAN_TREE
-lasan_tree_rough <- st_read(dsn = "data_general/LASAN_SHADE-LA_TREEmendous.kml") %>% 
+lasan_tree_rough <- st_read(dsn = "data_general/LASAN-Shade_LA_and_TREEmendous.kml") %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LASAN-TREE")
+
 
 #Create full LASAN_TREE area
 lasan_tree_buffered <- st_buffer(lasan_tree_rough, dist = 5)
 
-lasan_tree_unioned <- st_union(lasan_tree_buffered)
-
+lasan_tree_unioned <- st_union(lasan_tree_buffered) %>% 
+  st_make_valid()
 
 # Save to KML File
-st_write(lasan_ggla_unioned, "grant_area_data/LASAN_GGLA_minusKYCC.kml", append = FALSE)
-
 st_write(lasan_tree_unioned, "grant_area_data/LASAN_TREEandSHADE.kml", append = FALSE)
 
-### THEN import into Google maps, export out of Google maps, and re-save over old file ###
-```
-
-```{r}
-# Import LASAN_GGLE file exported from Google maps
-lasan_ggla_gmaps <- st_read("grant_area_data/LASAN_GGLA_minusKYCC.kml")
-
-lasan_ggla_minus_city <- st_intersection(lasan_ggla_gmaps, la_city_outline)
-
-lasan_ggla <- st_difference(lasan_ggla_minus_city, all_np_grants_unioned) %>% 
-  st_make_valid() %>% 
-  select("Name", "geometry") %>% 
-  mutate(Name = "LASAN-GGLA")
-  
-
-# Import LASAN_TREE file exported from Google maps
+# Read saved LASAN_TREE KML file
 lasan_tree_gmaps <- st_read("grant_area_data/LASAN_TREEandSHADE.kml")
 
 lasan_tree_minus_city <- st_intersection(lasan_tree_gmaps, la_city_outline)
 
-lasan_tree <- st_difference(lasan_tree_minus_city, all_np_grants_unioned) %>% 
-  st_make_valid()%>% 
+lasan_tree_smaller <- st_difference(lasan_tree_minus_city, all_np_grants) %>%
+  st_make_valid() %>% 
   select("Name", "geometry") %>% 
   mutate(Name = "LASAN-TREEandSHADE")
+
+lasan_tree_smaller <- st_difference(lasan_tree_smaller, lasan_ggla_gmaps) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-TREEandSHADE")
+
+lasan_tree <- st_difference(lasan_tree_smaller, lasan_boyle_heights_rough) %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-TREEandSHADE")
+```
+
+
+```{r}
+tm_shape(lasan_ggla_rough) +
+  tm_borders(col = "red")
 ```
 
 
@@ -435,6 +457,14 @@ lasan_tree <- st_difference(lasan_tree_minus_city, all_np_grants_unioned) %>%
 all_partner_grants <- rbind(all_np_grants, lasan_boyle_heights, lasan_ggla, lasan_tree)
 ```
 
+```{r}
+tm_shape(lasan_ggla) +
+  tm_polygons(col = "grey") +
+  tm_shape(lasan_tree_smaller) +
+  tm_borders(col = "red") +
+  tm_shape(net_grants) +
+  tm_fill(col = "lightblue")
+```
 
 
 
