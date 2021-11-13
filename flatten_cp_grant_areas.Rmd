@@ -101,7 +101,7 @@ kycc_grants <- rbind(kycc_calfire_jefferson, kycc_calfire_sla, kycc_calfire_amba
 
 # Map check
 tm_shape(kycc_grants) +
-  tm_borders(col = NA) +
+  tm_borders(col = "pink") +
   tm_fill(col = "Name") +
   tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
   tm_shape(kycc_area) +
@@ -112,7 +112,7 @@ tm_shape(kycc_grants) +
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save KYCC grants to SHP and KML, eval=FALSE}
 # Save KYCC grants to shp and kml
-st_write(kycc_grants, "grant_area_flattened/KYCC_Grants.shp", append = FALSE)
+st_write(kycc_grants, "grant_area_flattened/KYCC_grants/KYCC_Grants.shp", append = FALSE)
 
 st_write(kycc_grants, "grant_area_flattened/KYCC_Grants.kml", append = FALSE)
 ```
@@ -132,7 +132,7 @@ tp_grants <- tp_area
 
 # Map check
 tm_shape(tp_grants) +
-  tm_borders(col = NA) +
+  tm_borders(col = "pink") +
   tm_fill(col = "Name") +
   tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
   tm_shape(tp_area) +
@@ -143,7 +143,7 @@ tm_shape(tp_grants) +
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save TP grants to SHP and KML, eval=FALSE}
 # Save TP grants to shp and kml
-st_write(tp_grants, "grant_area_flattened/TP_Grants.shp", append = FALSE)
+st_write(tp_grants, "grant_area_flattened/TP_Grants/TP_Grants.shp", append = FALSE)
 
 st_write(tp_grants, "grant_area_flattened/TP_Grants.kml", append = FALSE)
 ```
@@ -162,13 +162,13 @@ lacc_valley_tcc <- st_intersection(lacc_valley_area, lacc_valley_tcc_rough) %>%
   select("Name", "geometry") %>% 
   mutate(Name = "LACC-Valley_TCC-project")
 
-# Combine all () grants
+# Combine all LACC grants
 lacc_valley_grants <- lacc_valley_tcc
 
 
 # Map check
 tm_shape(lacc_valley_grants) +
-  tm_borders(col = NA) +
+  tm_borders(col = "pink") +
   tm_fill(col = "Name") +
   tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
   tm_shape(lacc_valley_area) +
@@ -179,9 +179,9 @@ tm_shape(lacc_valley_grants) +
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save LACC_Valley grants to SHP and KML, eval=FALSE}
 # Save LACC_Valley grants to shp and kml
-st_write(lacc_valley_grants, "grant_area_flattened/LACC_Valley_Grants.shp", append = FALSE)
+st_write(lacc_valley_grants, "grant_area_flattened/LACC_Grants/LACC_Grants.shp", append = FALSE)
 
-st_write(lacc_valley_grants, "grant_area_flattened/LACC_Valley_Grants.kml", append = FALSE)
+st_write(lacc_valley_grants, "grant_area_flattened/LACC_Grants.kml", append = FALSE)
 ```
 
 
@@ -219,8 +219,6 @@ hlabt_area_smaller <- st_difference(hlabt_area_smaller, hlabt_cf267_rough) %>%
   mutate(Name = "HLABT_CalFire-CDs2/4/6/7")
 
 
-
-
 # Create CalFire-CDs 2/4/6/7 area
 hlabt_cf2467 <- hlabt_area_smaller
 
@@ -231,7 +229,7 @@ hlabt_grants <- rbind(hlabt_cf267, hlabt_cf2467, hlabt_cf13)
 
 # Map check
 tm_shape(hlabt_grants) +
-  tm_borders(col = NA) +
+  tm_borders(col = "pink") +
   tm_fill(col = "Name") +
   tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
   tm_shape(hlabt_area) +
@@ -242,7 +240,7 @@ tm_shape(hlabt_grants) +
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save HLABT grants to SHP and KML, eval=FALSE}
 # Save HLABT grants to shp and kml
-st_write(hlabt_grants, "grant_area_flattened/HLABT_Grants.shp", append = FALSE)
+st_write(hlabt_grants, "grant_area_flattened/HLABT_Grants/HLABT_Grants.shp", append = FALSE)
 
 st_write(hlabt_grants, "grant_area_flattened/HLABT_Grants.kml", append = FALSE)
 ```
@@ -295,7 +293,7 @@ net_scla <- st_intersection(net_area_smaller, net_scla_rough) %>%
   select("Name", "geometry") %>% 
   mutate(Name = "NET_SCLA-Greening")
 
-# Remove LASAN Boyle Heights from NET area
+# Remove NET_SCLA-Greening from NET area
 net_area_smaller <- st_difference(net_area_smaller, net_scla_rough)
 
 
@@ -306,7 +304,7 @@ net_watts <- st_intersection(net_area_smaller, net_watts_rough) %>%
   select("Name", "geometry") %>% 
   mutate(Name = "NET_Watts-Rising")
 
-# Remove LASAN Boyle Heights from NET area
+# Remove NET_Watts-Rising from NET area
 net_area_smaller <- st_difference(net_area_smaller, net_watts_rough)
 
 
@@ -333,21 +331,22 @@ net_grants <- rbind(net_ascot_hills, net_buchanan, net_ramona_gardens, net_scla,
 
 
 # Map check
-tm_shape(net_area) +
-  tm_polygons(col = "grey", alpha = 0.5) +
-  tm_shape(net_grants) +
-  tm_borders(col = "darkred") +
+tm_shape(net_grants) +
+  tm_borders(col = "pink") +
   tm_fill(col = "Name") +
+  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle")) +
   tm_shape(lasan_boyle_heights) +
-  tm_borders(col = "darkred") +
-  tm_fill(col = "blue") +
-  tm_layout(legend.outside = TRUE, legend.outside.position = c("left", "middle"))
+  tm_borders(col = "darkred", alpha = 0.75) +
+  tm_fill(col = "grey", alpha = 0.5) +
+  tm_shape(net_area) +
+  tm_borders(col = "orange", alpha = 0.75) +
+  tm_fill(col = "grey", alpha = 0.5)
 ```
 
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save NET grants to SHP and KML, eval=FALSE}
 # Save NET grants to shp and kml
-st_write(net_grants, "grant_area_flattened/NET_Grants.shp", append = FALSE)
+st_write(net_grants, "grant_area_flattened/NET_Grants/NET_Grants.shp", append = FALSE)
 
 st_write(net_grants, "grant_area_flattened/NET_Grants.kml", append = FALSE)
 ```
@@ -357,19 +356,22 @@ st_write(net_grants, "grant_area_flattened/NET_Grants.kml", append = FALSE)
 ```{r}
 all_np_grants <- rbind(kycc_grants, tp_grants, hlabt_grants, net_grants, lacc_valley_tcc)
 
-all_np_grants_unioned <- st_union(st_buffer(all_np_grants, dist = 5)) %>% 
+all_np_grants_unioned <- st_union(all_np_grants) %>% 
   st_make_valid()
 
-tm_shape(all_np_grants) +
-  tm_polygons(col = "Name")
+tm_shape(all_np_grants_unioned) +
+  tm_polygons() +
+  tm_shape(all_np_grants) +
+  tm_borders(col = "darkred") +
+  tm_fill(col = "Name")
 ```
 
 #### Save to SHP and KML Files (NOTE: have to run manually)
 ```{r Save all grants to SHP and KML, eval=FALSE}
 # Save all grants to shp and kml
-st_write(all_np_grants, "grant_area_flattened/City-Plants_NP-Partner_Grants.shp", append = FALSE)
+st_write(all_np_grants, "grant_area_flattened/CP_NP_Partner_Grants/CP_NP-Partner_Grants.shp", append = FALSE)
 
-st_write(all_np_grants, "grant_area_flattened/City-Plants_NP-Partner_Grants.kml", append = FALSE)
+st_write(all_np_grants, "grant_area_flattened/CP_NP_Partner_Grants.kml", append = FALSE)
 ```
 
 
