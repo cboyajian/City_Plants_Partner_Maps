@@ -384,21 +384,11 @@ lasan_ggla_rough <- st_read(dsn = "data_general/LASAN_GGLA_minus-kycc.kml") %>%
   select("Name", "geometry") %>% 
   mutate(Name = "LASAN-GGLA")
 
-# Reroject CRS and buffer
-nad83 <- 4269 # crs based in meters
-wgs84 <- 4326 # crs based in lat, lon
 
-lasan_ggla_nad83 <- st_transform(lasan_ggla_rough, crs = nad83)
+# Create full LASAN_GGLA area (minus KYCC)
+lasan_ggla_buffered <- st_buffer(lasan_ggla_rough, dist = 5)
 
-lasan_ggla_buffered <- st_buffer(lasan_ggla_nad83, dist = 5)
-
-# Create full LASAN_GGLA area (minus KYCC) 
 lasan_ggla_unioned <- st_union(lasan_ggla_buffered)
-
-lasan_ggla_wgs84 <- st_transform(lasan_ggla_unioned, crs = wgs84)
-
-# Create LASAN_GGLA area w/ no np overlap
-lasan_ggla <- st_difference(lasan_ggla_wgs84, all_np_grants)
 
 
 # Read in LASAN_TREE
@@ -406,43 +396,48 @@ lasan_tree_rough <- st_read(dsn = "data_general/LASAN_SHADE-LA_TREEmendous.kml")
   select("Name", "geometry") %>% 
   mutate(Name = "LASAN-TREE")
 
-# Reroject CRS and buffer
-nad83 <- 4269 # crs based in meters
-wgs84 <- 4326 # crs based in lat, lon
+#Create full LASAN_TREE area
+lasan_tree_buffered <- st_buffer(lasan_tree_rough, dist = 5)
 
-lasan_tree_nad83 <- st_transform(lasan_tree_rough, crs = nad83)
-
-lasan_tree_buffered <- st_buffer(lasan_tree_nad83, dist = 5)
-
-# Create full LASAN_TREE area (minus KYCC) 
 lasan_tree_unioned <- st_union(lasan_tree_buffered)
 
-lasan_tree_wgs84 <- st_transform(lasan_tree_unioned, crs = wgs84)
 
-# Create LASAN_GGLA area w/ no np overlap
-lasan_tree <- st_difference(lasan_tree_wgs84, all_np_grants_unioned)
+# Save to KML File
+st_write(lasan_ggla_unioned, "grant_area_data/LASAN_GGLA_minusKYCC.kml", append = FALSE)
 
+st_write(lasan_tree_unioned, "grant_area_data/LASAN_TREEandSHADE.kml", append = FALSE)
 
-tm_shape(lasan_ggla) +
-  tm_polygons(col = "goldenrod", alpha = 0.5) +
-  tm_shape(lasan_tree) +
-  tm_polygons(col = "purple", alpha = 0.5)
-  tm_shape(lasan_boyle_heights) +
-  tm_polygons(col = "lightblue", alpha = 0.5)
+### THEN import into Google maps, export out of Google maps, and re-save over old file ###
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save LASAN grants to SHP and KML, eval=FALSE}
-# Save LASAN grants to shp and kml
-###st_write(lasan_grants, "grant_area_flattened/LASAN_Grants.shp", append = FALSE)
+```{r}
+# Import LASAN_GGLE file exported from Google maps
+lasan_ggla_gmaps <- st_read("grant_area_data/LASAN_GGLA_minusKYCC.kml")
 
-###st_write(lasan_grants, "grant_area_flattened/LASAN_Grants.kml", append = FALSE)
+lasan_ggla_minus_city <- st_intersection(lasan_ggla_gmaps, la_city_outline)
+
+lasan_ggla <- st_difference(lasan_ggla_minus_city, all_np_grants_unioned) %>% 
+  st_make_valid() %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-GGLA")
+  
+
+# Import LASAN_TREE file exported from Google maps
+lasan_tree_gmaps <- st_read("grant_area_data/LASAN_TREEandSHADE.kml")
+
+lasan_tree_minus_city <- st_intersection(lasan_tree_gmaps, la_city_outline)
+
+lasan_tree <- st_difference(lasan_tree_minus_city, all_np_grants_unioned) %>% 
+  st_make_valid()%>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN-TREEandSHADE")
 ```
+
 
 
 ## Combining All Grants
 ```{r All grants combined}
-all_partner_grants <- rbind(kycc_grants, tp_grants, hlabt_grants, net_grants, lasan_boyle_heights)
+all_partner_grants <- rbind(all_np_grants, lasan_boyle_heights, lasan_ggla, lasan_tree)
 ```
 
 
