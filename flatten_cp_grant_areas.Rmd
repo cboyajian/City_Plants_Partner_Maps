@@ -372,11 +372,6 @@ st_write(all_np_grants, "grant_area_flattened/City-Plants_NP-Partner_Grants.kml"
 
 
 
-
-
-
-
-
 ## Create LASAN Grants
 ```{r LASAN}
 # Read in LASAN_GGLA
