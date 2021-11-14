@@ -2,13 +2,13 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>HLABT_CD13</name>
-    <Style id="poly-9C27B0-2501-66-nodesc-normal">
+    <Style id="poly-9C27B0-2701-36-nodesc-normal">
       <LineStyle>
         <color>ffb0279c</color>
-        <width>2.501</width>
+        <width>2.701</width>
       </LineStyle>
       <PolyStyle>
-        <color>42b0279c</color>
+        <color>24b0279c</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-9C27B0-2501-66-nodesc-highlight">
+    <Style id="poly-9C27B0-2701-36-nodesc-highlight">
       <LineStyle>
         <color>ffb0279c</color>
-        <width>3.7515</width>
+        <width>4.0515</width>
       </LineStyle>
       <PolyStyle>
-        <color>42b0279c</color>
+        <color>24b0279c</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,19 +30,19 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-9C27B0-2501-66-nodesc">
+    <StyleMap id="poly-9C27B0-2701-36-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-9C27B0-2501-66-nodesc-normal</styleUrl>
+        <styleUrl>#poly-9C27B0-2701-36-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-9C27B0-2501-66-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-9C27B0-2701-36-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name>HLABT: CDs13</name>
-      <styleUrl>#poly-9C27B0-2501-66-nodesc</styleUrl>
+      <styleUrl>#poly-9C27B0-2701-36-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
