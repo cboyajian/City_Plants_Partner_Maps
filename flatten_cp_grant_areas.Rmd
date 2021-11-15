@@ -418,12 +418,15 @@ lasan_ggla <- st_collection_extract(lasan_ggla_smaller, "POLYGON")
 
 #### Save to SHP and KML Files
 ```{r Save all grants to SHP and KML}
-# Save LASAN_GGLA to shp and kml
-st_write(lasan_ggla, "grant_area_flattened/LASAN_GGLA/LASAN_GGLA.shp", append = FALSE)
-
-st_write(lasan_ggla, "grant_area_flattened/LASAN_GGLA.kml", append = FALSE)
+# Save full LASAN_GGLA to shp and kml
+st_write(lasan_ggla_only_city, "grant_area_flattened/LASAN_GGLA-FULL/LASAN_TREEandSHADE-FULL.shp", append = FALSE)
 
 st_write(lasan_ggla_only_city, "grant_area_flattened/LASAN_GGLA-FULL.kml", append = FALSE)
+
+# Write smaller version of LASAN_GGLA
+st_write(lasan_ggla, "grant_area_flattened/LASAN_GGLA-removed/LASAN_TREEandSHADE-removed.shp", append = FALSE)
+
+st_write(lasan_ggla, "grant_area_flattened/LASAN_GGLA-removed.kml", append = FALSE)
 ```
 
 
@@ -477,19 +480,34 @@ lasan_tree <- st_collection_extract(lasan_tree_smaller, "POLYGON")
 
 #### Save to SHP and KML Files
 ```{r Save all grants to SHP and KML}
-# Save LASAN_GGLA to shp and kml
-st_write(lasan_tree, "grant_area_flattened/LASAN_TREEandSHADE/LASAN_TREEandSHADE.shp", append = FALSE)
+# Save full LASAN_TREEandSHADE to shp and kml
+st_write(lasan_tree_only_city, "grant_area_flattened/LASAN_TREEandSHADE-FULL/LASAN_TREEandSHADE-FULL.shp", append = FALSE)
 
-st_write(lasan_tree, "grant_area_flattened/LASAN_TREEandSHADE.kml", append = FALSE)
-
-
-# Save full LASAN_TREE area to KML
 st_write(lasan_tree_only_city, "grant_area_flattened/LASAN_TREEandSHADE-FULL.kml", append = FALSE)
 
+# Write smaller version of LASAN_TREEandSHADE
+st_write(lasan_tree, "grant_area_flattened/LASAN_TREEandSHADE-removed/LASAN_TREEandSHADE-removed.shp", append = FALSE)
+
+st_write(lasan_tree, "grant_area_flattened/LASAN_TREEandSHADE-removed.kml", append = FALSE)
 ```
 
 
+## Combine all NP partner grants and LASAN grants
+```{r}
+lasan_ggla_comb <- st_read("grant_area_flattened/LASAN_GGLA-removed.kml") %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN_GGLA")
 
+lasan_tree_comb <- st_read("grant_area_flattened/LASAN_TREEandSHADE-removed.kml") %>% 
+  select("Name", "geometry") %>% 
+  mutate(Name = "LASAN_TREEandSHADE")
+
+all_cp_grants <- rbind(all_np_grants, lasan_boyle_heights, lasan_ggla_comb, lasan_tree_comb)
+
+
+st_write(all_cp_grants, "grant_area_flattened/CP_ALL_Partner_Grants/CP_ALL_Partner_Grants.shp", append = FALSE)
+st_write(all_cp_grants, "grant_area_flattened/CP_ALL_Partner_Grants.kml", append = FALSE)
+```
 
 
 
