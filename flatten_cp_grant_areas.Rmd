@@ -109,8 +109,8 @@ tm_shape(kycc_grants) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save KYCC grants to SHP and KML, eval=FALSE}
+#### Save to SHP and KML Files
+```{r Save KYCC grants to SHP and KML}
 # Save KYCC grants to shp and kml
 st_write(kycc_grants, "grant_area_flattened/KYCC_grants/KYCC_Grants.shp", append = FALSE)
 
@@ -141,8 +141,8 @@ tm_shape(tp_watts) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save TP grants to SHP and KML, eval=FALSE}
+#### Save to SHP and KML Files
+```{r Save TP grants to SHP and KML}
 # Save TP grants to shp and kml
 st_write(tp_grants, "grant_area_flattened/TP_Grants/TP_Grants.shp", append = FALSE)
 
@@ -177,8 +177,8 @@ tm_shape(lacc_valley_grants) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save LACC_Valley grants to SHP and KML, eval=FALSE}
+#### Save to SHP and KML Files
+```{r Save LACC_Valley grants to SHP and KML}
 # Save LACC_Valley grants to shp and kml
 st_write(lacc_valley_grants, "grant_area_flattened/LACC_Grants/LACC_Grants.shp", append = FALSE)
 
@@ -238,8 +238,8 @@ tm_shape(hlabt_grants) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save HLABT grants to SHP and KML, eval=FALSE}
+#### Save to SHP and KML Files
+```{r Save HLABT grants to SHP and KML}
 # Save HLABT grants to shp and kml
 st_write(hlabt_grants, "grant_area_flattened/HLABT_Grants/HLABT_Grants.shp", append = FALSE)
 
@@ -344,8 +344,8 @@ tm_shape(net_grants) +
   tm_fill(col = "grey", alpha = 0.5)
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save NET grants to SHP and KML, eval=FALSE}
+#### Save to SHP and KML Files
+```{r Save NET grants to SHP and KML}
 # Save NET grants to shp and kml
 st_write(net_grants, "grant_area_flattened/NET_Grants/NET_Grants.shp", append = FALSE)
 
@@ -367,8 +367,8 @@ tm_shape(all_np_grants_unioned) +
   tm_fill(col = "Name")
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save all grants to SHP and KML, eval=FALSE}
+#### Save to SHP and KML Files 
+```{r Save all grants to SHP and KML}
 # Save all grants to shp and kml
 st_write(all_np_grants, "grant_area_flattened/CP_NP_Partner_Grants/CP_NP-Partner_Grants.shp", append = FALSE)
 
@@ -387,7 +387,7 @@ lasan_ggla_rough <- st_read(dsn = "grant_area_data/LASAN-NEW_GGLA_Extended_9-12-
 #Create full LASAN_GGLA area
 lasan_ggla_nad83 <- st_transform(lasan_ggla_rough, crs = 4269)
 
-lasan_ggla_nad83_buffered <- st_buffer(lasan_ggla_nad83, dist = 0.1)
+lasan_ggla_nad83_buffered <- st_buffer(lasan_ggla_nad83, dist = 5)
 
 lasan_ggla_wgs84 <- st_transform(lasan_ggla_nad83_buffered, crs = 4326)
 
@@ -416,12 +416,14 @@ lasan_ggla_smaller <- st_difference(lasan_ggla_only_city, net_scla) %>%
 lasan_ggla <- st_collection_extract(lasan_ggla_smaller, "POLYGON")
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save all grants to SHP and KML, eval=FALSE}
+#### Save to SHP and KML Files
+```{r Save all grants to SHP and KML}
 # Save LASAN_GGLA to shp and kml
 st_write(lasan_ggla, "grant_area_flattened/LASAN_GGLA/LASAN_GGLA.shp", append = FALSE)
 
 st_write(lasan_ggla, "grant_area_flattened/LASAN_GGLA.kml", append = FALSE)
+
+st_write(lasan_ggla_only_city, "grant_area_flattened/LASAN_GGLA-FULL.kml", append = FALSE)
 ```
 
 
@@ -437,7 +439,7 @@ lasan_tree_rough <- st_read(dsn = "grant_area_data/LASAN-Shade_LA_and_TREEmendou
 #Create full LASAN_GGLA area
 lasan_tree_nad83 <- st_transform(lasan_tree_rough, crs = 4269)
 
-lasan_tree_nad83_buffered <- st_buffer(lasan_tree_nad83, dist = 0.1)
+lasan_tree_nad83_buffered <- st_buffer(lasan_tree_nad83, dist = 5)
 
 lasan_tree_wgs84 <- st_transform(lasan_tree_nad83_buffered, crs = 4326)
 
@@ -448,9 +450,8 @@ lasan_tree_unioned <- st_union(lasan_tree_wgs84) %>%
 # Create non-overlapping LASAN_GGLA area
 lasan_tree_only_city <- st_intersection(lasan_tree_unioned, la_city_outline) 
 
-lasan_tree_smaller <- st_difference(lasan_tree_only_city, lasan_ggla) %>% 
+lasan_tree_smaller <- st_difference(lasan_tree_only_city, net_scla) %>% 
   st_make_valid() %>% 
-  st_difference(net_scla) %>% 
   st_difference(y = net_watts) %>% 
   st_difference(y = net_calfire) %>% 
   st_make_valid() %>% 
@@ -467,43 +468,27 @@ lasan_tree_smaller <- st_difference(lasan_tree_only_city, lasan_ggla) %>%
   st_make_valid() %>%
   st_difference(y = kycc_calfire_sla) %>% 
   st_difference(y = lasan_boyle_heights) %>% 
-  st_difference(y = tp_watts)
+  st_difference(y = tp_watts) %>% 
+  st_make_valid()
   
 
 lasan_tree <- st_collection_extract(lasan_tree_smaller, "POLYGON")
 ```
 
-#### Save to SHP and KML Files (NOTE: have to run manually)
-```{r Save all grants to SHP and KML, eval=FALSE}
+#### Save to SHP and KML Files
+```{r Save all grants to SHP and KML}
 # Save LASAN_GGLA to shp and kml
 st_write(lasan_tree, "grant_area_flattened/LASAN_TREEandSHADE/LASAN_TREEandSHADE.shp", append = FALSE)
 
 st_write(lasan_tree, "grant_area_flattened/LASAN_TREEandSHADE.kml", append = FALSE)
-```
 
 
-
-## Combining All Grants
-```{r All grants combined}
-all_partner_grants <- rbind(all_np_grants, lasan_boyle_heights, lasan_ggla, lasan_tree)
-
-#st_write(lasan_tree, "grant_area_flattened/LASAN_TREEandSHADE/LASAN_TREEandSHADE.shp", append = FALSE)
-
-#st_write(lasan_tree, "grant_area_flattened/LASAN_TREEandSHADE.kml", append = FALSE)
-```
-
-
-
-
-## Mapping all grant areas
-```{r Map all grants}
-tm_shape(la_city_outline) +
-  tm_polygons(col = "lightgrey", alpha = 0.5) +
-  tm_shape(all_partner_grants) +
-  tm_borders(col = "black", alpha = 0.5) +
-  tm_fill(col = "Name")
+# Save full LASAN_TREE area to KML
+st_write(lasan_tree_only_city, "grant_area_flattened/LASAN_TREEandSHADE-FULL.kml", append = FALSE)
 
 ```
+
+
 
 
 

@@ -2,13 +2,13 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>HLABT_CD2/6/7</name>
-    <Style id="poly-9FA8DA-1801-107-nodesc-normal">
+    <Style id="poly-F9A825-901-31-nodesc-normal">
       <LineStyle>
-        <color>ffdaa89f</color>
-        <width>1.801</width>
+        <color>ff25a8f9</color>
+        <width>0.901</width>
       </LineStyle>
       <PolyStyle>
-        <color>6bdaa89f</color>
+        <color>1f25a8f9</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -16,13 +16,13 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <Style id="poly-9FA8DA-1801-107-nodesc-highlight">
+    <Style id="poly-F9A825-901-31-nodesc-highlight">
       <LineStyle>
-        <color>ffdaa89f</color>
-        <width>2.7015</width>
+        <color>ff25a8f9</color>
+        <width>1.3515</width>
       </LineStyle>
       <PolyStyle>
-        <color>6bdaa89f</color>
+        <color>1f25a8f9</color>
         <fill>1</fill>
         <outline>1</outline>
       </PolyStyle>
@@ -30,19 +30,19 @@
         <text><![CDATA[<h3>$[name]</h3>]]></text>
       </BalloonStyle>
     </Style>
-    <StyleMap id="poly-9FA8DA-1801-107-nodesc">
+    <StyleMap id="poly-F9A825-901-31-nodesc">
       <Pair>
         <key>normal</key>
-        <styleUrl>#poly-9FA8DA-1801-107-nodesc-normal</styleUrl>
+        <styleUrl>#poly-F9A825-901-31-nodesc-normal</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#poly-9FA8DA-1801-107-nodesc-highlight</styleUrl>
+        <styleUrl>#poly-F9A825-901-31-nodesc-highlight</styleUrl>
       </Pair>
     </StyleMap>
     <Placemark>
       <name>HLABT: CalFire - CDs2/6/7</name>
-      <styleUrl>#poly-9FA8DA-1801-107-nodesc</styleUrl>
+      <styleUrl>#poly-F9A825-901-31-nodesc</styleUrl>
       <Polygon>
         <outerBoundaryIs>
           <LinearRing>
@@ -117,10 +117,12 @@
               -118.4445367,34.2670964,0
               -118.4494899,34.2660897,0
               -118.4721839,34.2661765,0
-              -118.4724475,34.2491034,0
+              -118.4728428,34.2485222,0
+              -118.4733299,34.246121,0
               -118.4736114,34.2214501,0
               -118.4740018,34.2167201,0
               -118.4735645,34.20197,0
+              -118.4743346,34.199609,0
               -118.4745896,34.1961832,0
               -118.475141,34.185332,0
               -118.4699372,34.1792778,0
