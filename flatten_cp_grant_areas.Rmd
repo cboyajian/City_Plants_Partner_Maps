@@ -350,6 +350,11 @@ tm_shape(net_grants) +
 st_write(net_grants, "grant_area_flattened/NET_Grants/NET_Grants.shp", append = FALSE)
 
 st_write(net_grants, "grant_area_flattened/NET_Grants.kml", append = FALSE)
+
+
+st_write(lasan_boyle_heights, "grant_area_flattened/LASAN_boyle-heights/LASAN-boyle-heights.shp", append = FALSE)
+
+st_write(lasan_boyle_heights, "grant_area_flattened/LASAN_boyle-heights.kml", append = FALSE)
 ```
 
 
