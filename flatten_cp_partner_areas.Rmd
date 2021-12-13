@@ -1,5 +1,5 @@
 ---
-title: "Flattening Grant Areas - City Plants"
+title: "Flattening Partner Areas - City Plants"
 author: "Clarissa Boyajian"
 date: "11/8/2021"
 output: html_document
